@@ -10,7 +10,7 @@ chai.use(chaiHttp);
 
 
 const baseURL = "http://localhost:3000/api/v1"
-describe("message service api get /",  (done) =>{
+describe("message service controller unit tests",  (done) =>{
   beforeEach((done) => {
     nock(baseURL).get('/messages?limit=1').reply(200, response.messagesLimit1);
     nock(baseURL).get('/messages').reply(200, response.messages);

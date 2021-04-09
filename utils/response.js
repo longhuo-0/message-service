@@ -13,7 +13,7 @@ module.exports = {
       success: false,
       result: null,
       message: message,
-      error: error.message,
+      error: error?.message,
       timestamp: (new Date()).toISOString()
     }
   }

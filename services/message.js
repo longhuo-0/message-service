@@ -63,9 +63,6 @@ module.exports = {
         {
           _id: id
         });
-      if (result === null) {
-        throw new Error("record not found");
-      }
       return result;
     }
     catch (err) {
