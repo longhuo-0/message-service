@@ -55,7 +55,7 @@ module.exports = {
   },
   list: async (req, res) => {
     try {
-      const messages = await messageService.list(req.body);
+      const messages = await messageService.list(req.query);
       res.statusCode = HttpStatusCode.SuccessCreated;
       res.json(responseFormatter.ok(messages));
     }

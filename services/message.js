@@ -1,5 +1,5 @@
 // mongoose modal
-const Message = require('../modals/message');
+const Message = require('../models/message');
 const { isPalindromic } = require('../utils/stringHelper');
 const debug = require('debug')('message-service:server');
 
@@ -63,6 +63,9 @@ module.exports = {
         {
           _id: id
         });
+      if (result === null) {
+        throw new Error("record not found");
+      }
       return result;
     }
     catch (err) {

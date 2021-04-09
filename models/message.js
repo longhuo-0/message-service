@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 
+//message schema definition
 const messageSchema = new mongoose.Schema({
   'message': {type: String, required: true},
   'palindromic': {type: Boolean, required: true, trim: true}

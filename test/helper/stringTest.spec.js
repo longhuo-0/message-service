@@ -1,0 +1,37 @@
+const chai = require("chai");
+const assert = chai.assert;
+const {isPalindromic} = require('../../utils/stringHelper');
+
+describe('stringHelper unit test', function (){
+  it('empty string return false', function (){
+    assert.equal(isPalindromic(''), false);
+  });
+
+  it('Rotator - should return true', function (){
+    assert.equal(isPalindromic('Rotator'), true);
+  });
+
+  it('Racecar - should return true', function (){
+    assert.equal(isPalindromic('Racecar'), true);
+  });
+
+  it('tattarrattat - should return true', function (){
+    assert.equal(isPalindromic('123\n   \n321'), true);
+  });
+
+  it('tattarrattat - should return true', function (){
+    assert.equal(isPalindromic('Was It A Rat I Saw?'), true);
+  });
+
+  it('A Santa Lived As a Devil At NASA - should return true', function (){
+    assert.equal(isPalindromic('A Santa Lived As a Devil At NASA'), true);
+  });
+
+  it('Are we not pure? “No, sir!” Panama’s moody Noriega brags. “It is garbage!” Irony dooms a man—a prisoner up to new era. \n should return true', function (){
+    assert.equal(isPalindromic('Are we not pure? “No, sir!” Panama’s moody Noriega brags. “It is garbage!” Irony dooms a man—a prisoner up to new era.'), true);
+  });
+
+  it('Canada should return false', function (){
+    assert.equal(isPalindromic('Canada'), false);
+  });
+});
