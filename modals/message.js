@@ -10,4 +10,8 @@ const messageSchema = new mongoose.Schema({
   timestamps: true
 })
 
+mongoose.set("debug", (collectionName, method, query, doc) => {
+  console.log(`${collectionName}.${method}`, JSON.stringify(query), doc);
+});
+
 module.exports = mongoose.model('message', messageSchema);

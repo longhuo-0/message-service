@@ -4,7 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet')
-
+const rateLimit = require('express-rate-limit');
 
 const indexRouter = require('./routes/index');
 const messageRouter = require('./routes/messages');
@@ -19,11 +19,17 @@ app.use(logger('dev'));
 // helmet for security purpose
 app.use(helmet());
 
+// accept application/json only
 app.use(express.json());
-//app.use(express.urlencoded({ extended: false }));
 
-//app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// disable ui
+// app.use(express.static(path.join(__dirname, 'public')));
+
+// limit each ip to 10 request per window (5 mins)
+const limiter = rateLimit({
+  windowMs: 5 * 60 * 1000,
+  max: 10
+})
 
 app.use('/', indexRouter);
 app.use('/api/v1/messages', messageRouter);
