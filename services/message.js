@@ -11,11 +11,13 @@ module.exports = {
    * @param sortOrder
    * @returns {Promise<*>}
    */
-  list: async ({ page = 0, limit = 10, sortBy = "created", sortOrder = "desc" }) => {
+  getList: async (filter, { page , limit , sort}) => {
     try {
-      const result = await Message.find({}).limit(limit * 1).skip(page * limit).sort({
-        [sortBy]: sortOrder
-      });
+      const result = await Message
+      .find(filter)
+      .limit(limit * 1)
+      .skip(page * limit)
+      .sort(sort);
       return result;
     }
     catch (err) {
@@ -79,6 +81,15 @@ module.exports = {
         throw new Error("record not found");
       }
 
+      return result;
+    }
+    catch (err) {
+      throw err;
+    }
+  },
+  count: async (filter) => {
+    try {
+      const result = await Message.countDocuments(filter);
       return result;
     }
     catch (err) {

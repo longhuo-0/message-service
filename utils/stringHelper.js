@@ -32,3 +32,15 @@ module.exports.isPalindromic = (message) => {
   return isPalindromic;
 }
 
+//this function only test string from query params
+module.exports.canConvertToPositiveInteger = (value) => {
+  //try to convert string to number
+  if(!Number.isNaN(+value)){
+    value = Number(value);
+    //check if this number is integer and greater than zero
+    if(Number.isInteger(value) && value > 0){
+      return true;
+    }
+  }
+  return false;
+}

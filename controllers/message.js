@@ -1,6 +1,7 @@
 const messageService = require('../services/message')
 const {StatusCodes: HttpStatusCode} = require('http-status-codes');
 const responseFormatter = require("../utils/response");
+const { canConvertToPositiveInteger } = require('../utils/stringHelper');
 const {isValidObjectId} = require("../utils/validator");
 const debug = require('debug')('message-service:server');
 
@@ -47,7 +48,7 @@ module.exports = {
       const searchResult = await messageService.getById(id);
       if(searchResult === null){
         return res
-        .status(HttpStatusCode.BAD_REQUEST)
+        .status(HttpStatusCode.NOT_FOUND)
         .json(responseFormatter.error(`record not found.`));
       }
       const result = await messageService.updateById(message, id);
@@ -70,7 +71,7 @@ module.exports = {
       const searchResult = await messageService.getById(id);
       if(searchResult === null){
         return res
-        .status(HttpStatusCode.BAD_REQUEST)
+        .status(HttpStatusCode.NOT_FOUND)
         .json(responseFormatter.error(`record not found.`));
       }
       await messageService.deleteById(id);
@@ -95,7 +96,7 @@ module.exports = {
       const message = await messageService.getById(id);
       if(message === null){
         return res
-        .status(HttpStatusCode.BAD_REQUEST)
+        .status(HttpStatusCode.NOT_FOUND)
         .json(responseFormatter.error(`record not found.`));
       }
       return res.status(HttpStatusCode.OK).json(responseFormatter.ok(message));
@@ -106,13 +107,60 @@ module.exports = {
       .json(responseFormatter.error(`retrieve message ${id} failed`, err));
     }
   },
-  list: async (req, res) => {
+  getList: async (req, res) => {
     try {
-      const messages = await messageService.list(req.query);
-      return res.status(HttpStatusCode.OK).json(responseFormatter.ok(messages));
+      //todo accept multiple field sort use this format field -test
+      let filter = {};
+      let page = req.query.page || 1;
+      let limit = req.query.limit || 10;
+      let sort = req.query.sort || "-createdAt";
+      let sortable = ['createdAt', 'updateAt', 'message', 'palindromic', '_id'];
+
+      if(sort.trim() === ""){
+        return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params sort.'));
+      }
+
+      if(sort.charAt(0) !== '-' && sort.charAt(0) !== '+'){
+        return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params sort.'));
+      }
+
+      if(!sortable.includes(sort.substring(1))){
+        return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params sort.'));
+      }
+
+      if(!canConvertToPositiveInteger(page)){
+        return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('query params page must be a postive integer.'));
+      }
+
+      if(!canConvertToPositiveInteger(limit)){
+        return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params limit.'));
+      }
+
+      limit = +limit > 100 ? 100 : 0;
+      page = +page;
+
+      if(req.query.palindromic){
+        //treat none "0" value to true
+        filter.palindromic = !!req.query.palindromic;
+      }
+      let pagination = {
+        page: page - 1,
+        limit,
+        sort : sort
+      }
+      const messages = await messageService.getList(filter, pagination);
+      const totalRecords = await messageService.count(filter);
+      const response = {
+        data: messages,
+        currentPage: page,
+        totalPages: Math.ceil(totalRecords / limit),
+        records: totalRecords
+      }
+      console.log("here")
+      return res.status(HttpStatusCode.OK).json(responseFormatter.ok(response));
     }
     catch (err) {
-
+      console.log(err)
       return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
       .json(responseFormatter.error("retrieve message list failed", err));
