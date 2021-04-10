@@ -1,7 +1,15 @@
 const express = require('express');
 const router = express.Router();
 
-/* GET home page. */
+/**
+ * @openapi
+ * /:
+ *   get:
+ *     description: Cloud Audition Project
+ *     responses:
+ *       200:
+ *         description: Returns a json
+ */
 router.get('/', function(req, res, next) {
   res.send({
     "success": true,

@@ -43,7 +43,7 @@ describe("Message Restful API Unit Test", function () {
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(201);
       expect(json.args[0][0].result).to.eql(stubValue);
-      expect(json.args[0][0].success).to.eql(true);
+
 
     });
 
@@ -66,7 +66,7 @@ describe("Message Restful API Unit Test", function () {
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
       expect(json.args[0][0].message).to.eql('message content missing.');
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
 
     });
 
@@ -88,8 +88,8 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
-      expect(json.args[0][0].message).to.eql('malformed payload.');
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].message).to.eql('message content missing.');
+      expect(json.args[0][0].result).to.be.equals(null);
     });
 
   });
@@ -122,8 +122,8 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
-      expect(json.args[0][0].success).to.eql(false);
-      expect(json.args[0][0].message).to.eql('malformed payload.');
+      expect(json.args[0][0].result).to.be.equals(null);
+      expect(json.args[0][0].message).to.eql('message content missing.');
 
     });
 
@@ -140,7 +140,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
       expect(json.args[0][0].message).to.eql('message content missing.');
 
     });
@@ -159,7 +159,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
       expect(json.args[0][0].message).to.eql('invalid path params id.');
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
 
     });
 
@@ -180,7 +180,7 @@ describe("Message Restful API Unit Test", function () {
         expect(status.calledOnce).to.be.true;
         expect(status.args[0][0]).to.equal(404);
         expect(json.args[0][0].message).to.eql('record not found.');
-        expect(json.args[0][0].success).to.eql(false);
+        expect(json.args[0][0].result).to.be.equals(null);
       }
       MessageService.getById.restore();
     });
@@ -215,7 +215,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(200);
-      expect(json.args[0][0].success).to.eql(true);
+
       expect(json.args[0][0].result).to.eql(stubValue);
 
     });
@@ -231,7 +231,7 @@ describe("Message Restful API Unit Test", function () {
       expect(stub.calledOnce).to.be.false;
       expect(status.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
       expect(json.args[0][0].message).to.eql('invalid path params id.');
     });
 
@@ -245,7 +245,7 @@ describe("Message Restful API Unit Test", function () {
       expect(stub.calledOnce).to.be.true;
       expect(status.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(404);
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
       expect(json.args[0][0].message).to.eql('record not found.');
     });
   });
@@ -283,7 +283,7 @@ describe("Message Restful API Unit Test", function () {
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(200);
       expect(json.args[0][0].result).to.eql(`message ${stubValue._id} deleted`);
-      expect(json.args[0][0].success).to.eql(true);
+
       MessageService.getById.restore();
 
     });
@@ -297,7 +297,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
       expect(json.args[0][0].message).to.eql('invalid path params id.');
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
     });
 
     it("delete one message, none exist path params id - should pass controller validation but return null in service and return error", async function () {
@@ -312,7 +312,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(404);
       expect(json.args[0][0].message).to.eql('record not found.');
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
 
       MessageService.getById.restore();
     });
@@ -346,7 +346,7 @@ describe("Message Restful API Unit Test", function () {
         expect(status.calledOnce).to.be.true;
         expect(json.calledOnce).to.be.true;
         expect(status.args[0][0]).to.equal(200);
-        expect(json.args[0][0].success).to.eql(true);
+
         expect(json.args[0][0].result.data).to.eql(response.messages);
         expect(json.args[0][0].result.currentPage).to.eql(1);
         expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(response.messages.length / 10));
@@ -367,7 +367,7 @@ describe("Message Restful API Unit Test", function () {
         expect(status.calledOnce).to.be.true;
         expect(json.calledOnce).to.be.true;
         expect(status.args[0][0]).to.equal(200);
-        expect(json.args[0][0].success).to.eql(true);
+
         expect(json.args[0][0].result.data).to.eql(messages);
         expect(json.args[0][0].result.currentPage).to.eql(1);
         expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(messages.length / 10));
@@ -388,7 +388,7 @@ describe("Message Restful API Unit Test", function () {
         expect(status.calledOnce).to.be.true;
         expect(json.calledOnce).to.be.true;
         expect(status.args[0][0]).to.equal(200);
-        expect(json.args[0][0].success).to.eql(true);
+
         expect(json.args[0][0].result.data).to.eql(response.messages);
         expect(json.args[0][0].result.currentPage).to.eql(1);
         expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(response.messages.length / 10));
@@ -412,7 +412,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(200);
-      expect(json.args[0][0].success).to.eql(true);
+
       expect(json.args[0][0].result.data).to.eql(messages);
       expect(json.args[0][0].result.currentPage).to.eql(+page);
       expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(messages.length / 10));
@@ -439,7 +439,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(200);
-      expect(json.args[0][0].success).to.eql(true);
+
       expect(json.args[0][0].result.data).to.eql(messages);
       expect(json.args[0][0].result.currentPage).to.eql(+page);
       expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(messages.length / 10));
@@ -459,7 +459,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
       expect(json.args[0][0].message).to.eql('invalid query params sort.');
     });
 
@@ -476,7 +476,7 @@ describe("Message Restful API Unit Test", function () {
         expect(status.calledOnce).to.be.true;
         expect(json.calledOnce).to.be.true;
         expect(status.args[0][0]).to.equal(400);
-        expect(json.args[0][0].success).to.eql(false);
+        expect(json.args[0][0].result).to.be.equals(null);
         expect(json.args[0][0].message).to.eql('invalid query params sort.');
       });
 
@@ -492,7 +492,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
       expect(json.args[0][0].message).to.eql('invalid query params sort.');
     });
 
@@ -508,7 +508,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
-      expect(json.args[0][0].success).to.eql(false);
+      expect(json.args[0][0].result).to.be.equals(null);
       expect(json.args[0][0].message).to.eql('query params page must be a postive integer.');
     });
 
@@ -524,7 +524,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(200);
-      expect(json.args[0][0].success).to.eql(true);
+
       expect(json.args[0][0].result.data).to.eql(response.messages);
       expect(json.args[0][0].result.currentPage).to.eql(1);
       expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(response.messages.length / 10));

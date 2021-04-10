@@ -1,21 +1,57 @@
+require('dotenv').config()
 const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet')
 const rateLimit = require('express-rate-limit');
-
 const indexRouter = require('./routes/index');
 const messageRouter = require('./routes/messages');
 
+//const swaggerUi = require("swagger-ui-express");
+//import swaggerJsdoc from "swagger-jsdoc";
+
 const app = express();
+
+if(process.env.NODE_ENV === 'development'){
+  app.use(logger('dev'));
+}
 
 // view engine setup
 //app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'jade');
 
 if(process.env.NODE_ENV === 'development'){
+  //swagger doc
+  /*const swaggerDefinition = {
+    openapi: "3.0.0",
+    info: {
+      title: "Cloud Audition Project",
+      version: "1.0.0",
+      description:
+        "A REST API working with message resource",
+      license: {
+        name: "MIT",
+        url: "https://spdx.org/licenses/MIT.html",
+      },
+      contact: {
+        name: "Long Huo",
+        url: "https://github.com/GoodSpeed-HL",
+        email: "long_huo@icloud.com",
+      },
+    },
+    servers: [
+      {
+        url: "http://localhost:3000/",
+      },
+    ],
+  };
+  const swaggerJsDocOptions = {
+    swaggerDefinition,
+    apis: ['./routes/!*.js']
+  }
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerJsdoc(swaggerJsDocOptions)));
+*/
+  //dev log
   app.use(logger('dev'));
 }
 // helmet for security purpose

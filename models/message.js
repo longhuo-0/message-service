@@ -7,20 +7,19 @@ const messageSchema = new mongoose.Schema({
   'message': {
     type: String,
     required: true,
-    index: true,
     validate: {
       validator: function(s){
-        console.log("here");
         return !validator.isEmpty(s)
       },
       message: 'please provide a none blank string'
     }
   },
-  'palindromic': {type: Boolean, required: true}
+  'palindromic': {type: Boolean, required: true, index: true}
 
 }, {
   timestamps: true
-})
+});
+
 mongoose.set('useCreateIndex', true);
 if(process.env.mode === 'development'){
   mongoose.set("debug", (collectionName, method, query, doc) => {

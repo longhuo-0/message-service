@@ -2,7 +2,7 @@ const chai = require("chai");
 const assert = chai.assert;
 const {canConvertToPositiveInteger} = require('../utils/stringHelper');
 
-describe('canConvertPositiveInteger unit test', function (){
+describe.skip('canConvertPositiveInteger unit test', function (){
 
 
   it("123 return true", function (){

@@ -1,7 +1,6 @@
 module.exports = {
   ok: (result) => {
     return {
-      success: true,
       result: result,
       message: "",
       error: "",
@@ -10,7 +9,6 @@ module.exports = {
   },
   error: (message, error) => {
     return {
-      success: false,
       result: null,
       message: message,
       error: error?.message,

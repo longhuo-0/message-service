@@ -7,12 +7,13 @@ const debug = require('debug')('message-service:server');
 
 module.exports = {
   create: async (req, res, next) => {
-    const message = req.body.message;
+    let message = req.body.message || "";
 
     try {
-      if(typeof message !== 'string'){
+      if(typeof message === 'object'){
         return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('malformed payload.'));
       }
+      message = message.toString();
 
       if(message.trim() === ''){
         return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('message content missing.'));
@@ -29,13 +30,14 @@ module.exports = {
   },
   updateById: async (req, res) => {
     const { id } = req.params;
-    const { message } = req.body;
+    let message = req.body.message || "";
 
-    if(typeof message !== 'string'){
-      return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('malformed payload.'));
+    if(typeof message === 'object'){
+      return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('malformed payload'));
     }
+    message = message.toString();
 
-    if(message.trim() === ''){
+    if(!message || message.trim() === ''){
       return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('message content missing.'));
     }
 
@@ -54,7 +56,6 @@ module.exports = {
       return res.status(HttpStatusCode.OK).json(responseFormatter.ok(result));
     }
     catch (err) {
-      console.log(err)
       return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
       .json(responseFormatter.error(`update message ${id} failed`, err));
