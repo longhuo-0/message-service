@@ -383,15 +383,15 @@ describe("Message Restful API Unit Test", function (){
 
     });
 
-    it('get message list, no filter, use page=2&limit=3 - should return true', async function (){
-      let page = "2", limit = "3";
+    it('get message list, no filter, use page=2&size=3 - should return true', async function (){
+      let page = "2", size = "3";
 
       //simulate pagination
-      const messages = response.messages.slice( (page - 1)  * limit , page * limit );
+      const messages = response.messages.slice( (page - 1)  * size , page * size );
 
       const stub = sinon.stub(MessageService, "getList").returns(messages);
       const countStub = sinon.stub(MessageService, "count").returns(messages.length)
-      const req = { query: {page, limit}};
+      const req = { query: {page, size}};
       await MessageController.getList(req, res);
 
       expect(stub.calledOnce).to.be.true;
@@ -410,15 +410,15 @@ describe("Message Restful API Unit Test", function (){
 
     });
 
-    it('get message list, no filter, limit=5 - should return true', async function (){
+    it('get message list, no filter, size=5 - should return true', async function (){
       let page = "1";
-      let limit = "5";
+      let size = "5";
 
       //simulate pagination
       const messages = response.messages.slice( 0, 5 );
       const stub = sinon.stub(MessageService, "getList").returns(messages);
       const countStub = sinon.stub(MessageService, "count").returns(messages.length)
-      const req = { query: {page, limit}};
+      const req = { query: {page, size}};
       await MessageController.getList(req, res);
 
       expect(stub.calledOnce).to.be.true;
@@ -501,7 +501,7 @@ describe("Message Restful API Unit Test", function (){
     it('get message list, page = 101 - should return true', async function (){
       const stub = sinon.stub(MessageService, "getList").returns(response.messages);
       const countStub = sinon.stub(MessageService, "count").returns(response.messages.length)
-      const req = { query: {limit: "101"}};
+      const req = { query: {size: "101"}};
       await MessageController.getList(req, res);
 
       //console.log(res.json())

@@ -112,7 +112,7 @@ module.exports = {
       //todo accept multiple field sort use this format field -test
       let filter = {};
       let page = req.query.page || 1;
-      let limit = req.query.limit || 10;
+      let size = req.query.size || 10;
       let sort = req.query.sort || "-createdAt";
       let sortable = ['createdAt', 'updateAt', 'message', 'palindromic', '_id'];
 
@@ -132,11 +132,11 @@ module.exports = {
         return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('query params page must be a postive integer.'));
       }
 
-      if(!canConvertToPositiveInteger(limit)){
-        return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params limit.'));
+      if(!canConvertToPositiveInteger(size)){
+        return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params size.'));
       }
 
-      limit = (+limit > 100) ? 100 : limit;
+      size = (+size > 100) ? 100 : size;
       page = +page;
 
       if(req.query.palindromic){
@@ -145,7 +145,7 @@ module.exports = {
       }
       let pagination = {
         page: page - 1,
-        limit,
+        size,
         sort : sort
       }
       const messages = await messageService.getList(filter, pagination);
@@ -153,7 +153,7 @@ module.exports = {
       const response = {
         data: messages,
         currentPage: page,
-        totalPages: Math.ceil(totalRecords / limit),
+        totalPages: Math.ceil(totalRecords / size),
         records: totalRecords
       }
       return res.status(HttpStatusCode.OK).json(responseFormatter.ok(response));

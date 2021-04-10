@@ -6,17 +6,17 @@ const debug = require('debug')('message-service:server');
 module.exports = {
   /**
    * @param page
-   * @param limit
+   * @param size
    * @param sortBy
    * @param sortOrder
    * @returns {Promise<*>}
    */
-  getList: async (filter = {}, { page = 0, limit = 10, sort = '-createdAt'}) => {
+  getList: async (filter = {}, { page = 0, size = 10, sort = '-createdAt'}) => {
     try {
       const result = await Message
       .find(filter)
-      .limit(limit * 1)
-      .skip(page * limit)
+      .limit(size * 1)
+      .skip(page * size)
       .sort(sort);
       return result;
     }

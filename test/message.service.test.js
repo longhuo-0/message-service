@@ -206,7 +206,7 @@ describe("Message Service Unit Test", function () {
   });
 
   describe("getList", function () {
-    before
+
 
     afterEach(function () {
       Message.find.restore();
@@ -215,21 +215,68 @@ describe("Message Service Unit Test", function () {
     it('get message list, no filter, use default pagination - should return array of messages',
       async function () {
         const filter = {};
-        const pagination = { page: 0, limit: 10, sort: '-createdAt' };
+        const pagination = { page: 0, size: 10, sort: '-createdAt' };
 
         // make chained return to simulate mongoose find mongoose api
-
+        const stub = sinon.stub(Message, "find").returns({
+          limit: (n) => {
+            return {
+              skip: (m) => {
+                return {
+                  sort: (w) => {
+                    return new Promise((
+                      resolve, reject) => {
+                      resolve(response.messages);
+                    });
+                  }
+                }
+              }
+            }
+          }
+        });
         const messages = await MessageService.getList(filter, pagination);
         expect(stub.calledOnce).to.be.true;
         expect(messages).to.eql(response.messages);
 
       });
 
-    it('get message list, filter palindromic only, use default pagination - should return array of messages',
+    it(
+      'get message list, filter palindromic only, use default pagination - should return array of messages',
       async function () {
-        const filter = {palindromic: true};
-        const pagination = { };
+        const filter = { palindromic: true };
+        const pagination = {};
         const mockMessages = response.messages.filter(item => item.palindromic === true);
+
+        // make chained return to simulate mongoose find mongoose api
+        const stub = sinon.stub(Message, "find").returns({
+          limit: (n) => {
+            return {
+              skip: (m) => {
+                return {
+                  sort: (w) => {
+                    return new Promise((
+                      resolve, reject) => {
+                      resolve(mockMessages);
+                    });
+                  }
+                }
+              }
+            }
+          }
+        });
+        const messages = await MessageService.getList(filter, pagination);
+        expect(stub.calledOnce).to.be.true;
+        expect(messages).to.eql(mockMessages);
+
+      });
+
+    it(
+      'get message list, filter palindromic false, use page=19 - should return array of messages',
+      async function () {
+        const filter = { palindromic: true };
+        const pagination = {};
+        const mockMessages = response.messages.filter(item => item.palindromic === true);
+
         // make chained return to simulate mongoose find mongoose api
         const stub = sinon.stub(Message, "find").returns({
           limit: (n) => {
