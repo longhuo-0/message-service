@@ -29,7 +29,7 @@ module.exports = {
       const newMessage = new Message({
         message: message,
         palindromic: isPalindromic(message)
-      })
+      });
       const result = await newMessage.save();
       return result;
     }
@@ -48,7 +48,8 @@ module.exports = {
           message: message,
           palindromic: isPalindromic(message)
         }, {
-          new: true
+          new: true,
+          runValidators: true
         });
       if (result === null) {
         throw new Error("record not found");

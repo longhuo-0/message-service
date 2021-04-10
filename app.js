@@ -15,12 +15,14 @@ const app = express();
 //app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'jade');
 
-app.use(logger('dev'));
+if(process.env.NODE_ENV === 'development'){
+  app.use(logger('dev'));
+}
 // helmet for security purpose
 app.use(helmet());
 
 // accept application/json only
-app.use(express.json());
+app.use(express.json({limit: '1mb'}));
 
 // disable ui
 // app.use(express.static(path.join(__dirname, 'public')));

@@ -7,10 +7,10 @@ const debug = require('debug')('message-service:server');
 
 module.exports = {
   create: async (req, res, next) => {
-    const { message } = req.body;
+    const message = req.body.message;
 
     try {
-      if(typeof message == 'undefined'){
+      if(typeof message !== 'string'){
         return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('malformed payload.'));
       }
 
@@ -22,7 +22,6 @@ module.exports = {
       return res.status(HttpStatusCode.CREATED).json(responseFormatter.ok(result));
     }
     catch (err) {
-      console.log(err)
       return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
       .json(responseFormatter.error("save message failed", err));
@@ -32,7 +31,7 @@ module.exports = {
     const { id } = req.params;
     const { message } = req.body;
 
-    if(typeof message == 'undefined'){
+    if(typeof message !== 'string'){
       return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('malformed payload.'));
     }
 
@@ -109,18 +108,19 @@ module.exports = {
   },
   getList: async (req, res) => {
     try {
-      //todo accept multiple field sort use this format field -test
       let filter = {};
       let page = req.query.page || 1;
       let size = req.query.size || 10;
       let sort = req.query.sort || "-createdAt";
+
+      //plain query will remove + sign
+      if(sort.charAt(0) !== '-' && sort.charAt(0) !== '+'){
+        sort = "+" + sort;
+      }
+
       let sortable = ['createdAt', 'updateAt', 'message', 'palindromic', '_id'];
 
       if(sort.trim() === ""){
-        return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params sort.'));
-      }
-
-      if(sort.charAt(0) !== '-' && sort.charAt(0) !== '+'){
         return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params sort.'));
       }
 
@@ -139,10 +139,11 @@ module.exports = {
       size = (+size > 100) ? 100 : size;
       page = +page;
 
-      if(req.query.palindromic){
-        //treat none "0" value to true
-        filter.palindromic = !!req.query.palindromic;
+      if("palindromic" in req.query){
+        //treat none "0" value to false
+        filter.palindromic = req.query.palindromic === "0" ? false : true;
       }
+
       let pagination = {
         page: page - 1,
         size,
@@ -159,7 +160,7 @@ module.exports = {
       return res.status(HttpStatusCode.OK).json(responseFormatter.ok(response));
     }
     catch (err) {
-      console.log(err)
+      debug(err)
       return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
       .json(responseFormatter.error("retrieve message list failed", err));

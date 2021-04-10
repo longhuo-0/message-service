@@ -106,7 +106,7 @@ describe("Message Service Unit Test", function () {
       MessageService.updateById.restore();
     });
 
-    it("get a message from a valid objectId, should pass", async function () {
+    it("update a message with a valid objectId, should pass", async function () {
 
       const stubValue = {
         _id: require('mongoose').Types.ObjectId(),
@@ -128,7 +128,7 @@ describe("Message Service Unit Test", function () {
       expect(message.updatedAt).to.equal(stubValue.updatedAt);
     });
 
-    it('get message from invalid record objectId, should return null', async function () {
+    it('update message from invalid record objectId, should return null', async function () {
       const id = "6070fd162366b95c2cb52cda";
       const stub = sinon.stub(MessageService, "updateById").returns(null);
       const message = await MessageService.updateById(mockUpdatedMessage, id);
@@ -136,12 +136,12 @@ describe("Message Service Unit Test", function () {
       expect(message).to.be.equal(null);
     });
 
-    it('get message from malformed objectId, should throw error', async function () {
+    it('update a message from malformed objectId, should throw error', async function () {
       const id = "b95c2cb52cda";
       const stub = sinon.stub(MessageService, "updateById")
       .throws(new MongooseError.CastError(`Cast to ObjectId failed for value ${id}`));
       try {
-        const message = await MessageService.updateById(id);
+        const message = await MessageService.updateById(mockUpdatedMessage, id);
       }
       catch (error) {
         expect(stub.calledOnce).to.be.true;
@@ -149,6 +149,22 @@ describe("Message Service Unit Test", function () {
         expect(error.message).to.be.contains("Cast to ObjectId failed for value")
       }
     });
+
+    it('update a message from valid objectId, but message content is empty should throw error', async function () {
+      const id = "b95c2cb52cda";
+      const stub = sinon.stub(MessageService, "updateById")
+      .throws(new MongooseError.ValidationError());
+      try {
+        const message = await MessageService.updateById("", id);
+      }
+      catch (error) {
+        expect(stub.calledOnce).to.be.true;
+        expect(error).to.be.instanceof(MongooseError.ValidationError);
+        expect(error.message).to.be.contains("Validation failed")
+      }
+    });
+
+
   });
 
   describe("delete", function () {

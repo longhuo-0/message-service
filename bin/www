@@ -90,4 +90,4 @@ function onListening() {
   require('../utils/connection')
 }
 
-
+module.exports = server;
