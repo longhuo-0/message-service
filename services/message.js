@@ -11,7 +11,7 @@ module.exports = {
    * @param sortOrder
    * @returns {Promise<*>}
    */
-  getList: async (filter, { page , limit , sort}) => {
+  getList: async (filter = {}, { page = 0, limit = 10, sort = '-createdAt'}) => {
     try {
       const result = await Message
       .find(filter)

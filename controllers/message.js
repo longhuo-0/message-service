@@ -136,7 +136,7 @@ module.exports = {
         return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params limit.'));
       }
 
-      limit = +limit > 100 ? 100 : 0;
+      limit = (+limit > 100) ? 100 : limit;
       page = +page;
 
       if(req.query.palindromic){
@@ -156,7 +156,6 @@ module.exports = {
         totalPages: Math.ceil(totalRecords / limit),
         records: totalRecords
       }
-      console.log("here")
       return res.status(HttpStatusCode.OK).json(responseFormatter.ok(response));
     }
     catch (err) {

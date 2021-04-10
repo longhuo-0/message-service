@@ -309,7 +309,7 @@ describe("Message Restful API Unit Test", function (){
   });
 
 
-  describe("Get Message List", function (){
+  describe("/messages", function (){
     let status, json, res;
     beforeEach(() => {
       status = sinon.stub();
@@ -344,9 +344,9 @@ describe("Message Restful API Unit Test", function (){
     });
 
     it('get message list, filter palindromic=1, use default pagination - should return true', async function (){
-      const totalRecord = response.messages.filter(item => item.palindromic === true).length;
-      const stub = sinon.stub(MessageService, "getList").returns(response.messages);
-      const countStub = sinon.stub(MessageService, "count").returns(totalRecord)
+      const messages = response.messages.filter(item => item.palindromic === true);
+      const stub = sinon.stub(MessageService, "getList").returns(messages);
+      const countStub = sinon.stub(MessageService, "count").returns(messages.length)
       const req = { query: {palindromic: 1}};
       await MessageController.getList(req, res);
 
@@ -356,10 +356,10 @@ describe("Message Restful API Unit Test", function (){
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(200);
       expect(json.args[0][0].success).to.eql(true);
-      expect(json.args[0][0].result.data).to.eql(response.messages);
+      expect(json.args[0][0].result.data).to.eql(messages);
       expect(json.args[0][0].result.currentPage).to.eql(1);
-      expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(response.messages.length / 10));
-      expect(json.args[0][0].result.records).to.eql(totalRecord);
+      expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(messages.length / 10));
+      expect(json.args[0][0].result.records).to.eql(messages.length);
 
     });
 
