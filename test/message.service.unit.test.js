@@ -37,7 +37,7 @@ describe("Message Service Unit Test", function () {
 
     });
 
-    it('should not save - simulate mongo error', async function () {
+    it('should not save - simulate mongo general', async function () {
       const msg = "madam";
       const stub = sinon.stub(Message.prototype, "save").throws({ name: 'MongoError' });
       try {
@@ -46,6 +46,19 @@ describe("Message Service Unit Test", function () {
       catch (error) {
         expect(stub.calledOnce).to.be.true;
         expect(error.name).to.be.equal('MongoError');
+      }
+    });
+
+    it('should not save - simulate mongo error', async function () {
+      const msg = "madam";
+      const stub = sinon.stub(Message.prototype, "save").throws(new MongooseError.ValidationError());
+      try {
+        await MessageService.create(msg);
+      }
+      catch (error) {
+        expect(stub.calledOnce).to.be.true;
+        expect(error).to.be.instanceof(MongooseError.ValidationError);
+        expect(error.message).to.be.contains("Validation failed")
       }
     });
   });
