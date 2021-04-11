@@ -13,6 +13,6 @@ Change postman environment `baseurl` to `https://example.com`, if you want to gi
 
 * [Show messages](docs/getList.md) : `GET /api/v1/messages`
 * [Create messages](docs/post.md) : `POST /api/accounts/`
-* [Show A messages](docs/get.md) : `GET /api/accounts/:pk/`
-* [Update A messages](docs/put.md) : `PUT /api/accounts/:pk/`
-* [Delete A messages](docs/delete.md) : `DELETE /api/accounts/:pk/`
+* [Show A messages](docs/get.md) : `GET /api/accounts/:id`
+* [Update A messages](docs/put.md) : `PUT /api/accounts/:id`
+* [Delete A messages](docs/delete.md) : `DELETE /api/accounts/:id`
