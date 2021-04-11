@@ -11,7 +11,7 @@ module.exports = {
     return {
       result: null,
       message: message,
-      error: error.message,
+      error: error ? error.message : "",
       timestamp: (new Date()).toISOString()
     }
   }

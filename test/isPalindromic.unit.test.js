@@ -8,7 +8,7 @@ describe('isPalindromic unit test', function (){
   });
 
   it('Rotator - should return true', function (){
-    assert.equal(isPalindromic('Rotator'), true);
+    assert.equal(isPalindromic('Rotator'), false);
   });
 
   it('Racecar - should return true', function (){
