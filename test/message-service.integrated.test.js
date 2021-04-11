@@ -1,10 +1,6 @@
 require('dotenv').config()
 const chai = require("chai");
-const sinon = require("sinon");
 const expect = chai.expect;
-const faker = require("faker");
-const response = require("./mocks/messages")
-const MongooseError = require('mongoose').Error;
 const server = require('../bin/www');
 const cloneDeep = require('lodash').cloneDeep;
 
@@ -12,11 +8,11 @@ const chaiHttp = require('chai-http');
 chai.use(chaiHttp);
 
 const MessageService = require('../services/message')
-const MessageController = require('../controllers/message')
 const MessageModal = require('../models/message')
 
 const mockData = require('./mocks/intergration.data');
 const apiEndpoint = process.env.API_ENDPOINT;
+console.log(apiEndpoint)
 describe('GET /messages', function (){
   //create insert mock data to db
   before(async function(){
@@ -37,11 +33,10 @@ describe('GET /messages', function (){
 
        expect(res.status).be.equal(200);
        expect(res.body.result).to.be.a('object');
-       expect(res.body.success).to.equal(true);
        expect(res.body.result.data).to.a('array');
        expect(res.body.result.currentPage).to.equal(1);
        expect(res.body.result.totalPages).to.equal(1);
-       expect(res.body.result.records).to.equal(expectMessages.length);
+       expect(res.body.result.totalRecords).to.equal(expectMessages.length);
        for (let i = 0; i < expectMessages.length; i++){
          expect(res.body.result.data[i].message).to.be.contains(expectMessages[i].message);
          expect(res.body.result.data[i].palindromic).to.be.equal(expectMessages[i].palindromic);
@@ -55,11 +50,11 @@ describe('GET /messages', function (){
       const expectMessages = cloneDeep(mockData.messages).reverse().filter(item => item.palindromic === true);
       expect(res.status).be.equal(200);
       expect(res.body.result).to.be.a('object');
-      expect(res.body.success).to.equal(true);
+
       expect(res.body.result.data).to.a('array');
       expect(res.body.result.currentPage).to.equal(1);
       expect(res.body.result.totalPages).to.equal(1);
-      expect(res.body.result.records).to.equal(expectMessages.length);
+      expect(res.body.result.totalRecords).to.equal(expectMessages.length);
 
       for (let i = 0; i < expectMessages.length; i++){
         expect(res.body.result.data[i].message).to.be.contains(expectMessages[i].message);
@@ -75,11 +70,11 @@ describe('GET /messages', function (){
       let pagedExpectMessages = expectMessages.slice(3, 6);
       expect(res.status).be.equal(200);
       expect(res.body.result).to.be.a('object');
-      expect(res.body.success).to.equal(true);
+
       expect(res.body.result.data).to.a('array');
       expect(res.body.result.currentPage).to.equal(2);
       expect(res.body.result.totalPages).to.equal(2);
-      expect(res.body.result.records).to.equal(expectMessages.length);
+      expect(res.body.result.totalRecords).to.equal(expectMessages.length);
       for (let i = 0; i < pagedExpectMessages.length; i++){
         expect(res.body.result.data[i].message).to.be.contains(pagedExpectMessages[i].message);
         expect(res.body.result.data[i].palindromic).to.be.equal(pagedExpectMessages[i].palindromic);
@@ -104,7 +99,7 @@ describe('POST /messages', function (){
     .end(function(err, res){
       expect(res.status).be.equal(201);
       expect(res.body.result).to.be.a('object');
-      expect(res.body.success).to.equal(true);
+
       expect(res.body.result.message).to.equal(payload.message);
       expect(res.body.result.palindromic).to.equal(false);
       done();
@@ -120,7 +115,7 @@ describe('POST /messages', function (){
     .end(function(err, res){
       expect(res.status).be.equal(201);
       expect(res.body.result).to.be.a('object');
-      expect(res.body.success).to.equal(true);
+
       expect(res.body.result.message).to.equal(payload.message);
       expect(res.body.result.palindromic).to.equal(true);
       done();
@@ -136,7 +131,7 @@ describe('POST /messages', function (){
     .end(function(err, res){
 
       expect(res.status).be.equal(400);
-      expect(res.body.success).to.equal(false);
+      expect(res.body.result).to.equal(null);
       expect(res.body.message).to.equal('malformed payload.');
       done();
     })
@@ -151,7 +146,7 @@ describe('POST /messages', function (){
     .end(function(err, res){
 
       expect(res.status).be.equal(400);
-      expect(res.body.success).to.equal(false);
+      expect(res.body.result).to.equal(null);
       expect(res.body.message).to.equal('message content missing.');
       done();
     })
@@ -187,7 +182,7 @@ describe('PUT /messages', function (){
     .end(function(err, res){
       expect(res.status).be.equal(200);
       expect(res.body.result).to.be.a('object');
-      expect(res.body.success).to.equal(true);
+
       expect(res.body.result.message).to.equal(payload.message);
       expect(res.body.result.palindromic).to.equal(false);
       done();
@@ -203,7 +198,7 @@ describe('PUT /messages', function (){
     .end(function(err, res){
       expect(res.status).be.equal(200);
       expect(res.body.result).to.be.a('object');
-      expect(res.body.success).to.equal(true);
+
       expect(res.body.result.message).to.equal(payload.message);
       expect(res.body.result.palindromic).to.equal(true);
       done();
@@ -220,7 +215,7 @@ describe('PUT /messages', function (){
 
       expect(res.status).to.be.equal(400);
       expect(res.body.result).to.be.equal(null);
-      expect(res.body.success).to.equal(false);
+      expect(res.body.result).to.equal(null);
       expect(res.body.message).to.equal('malformed payload.');
       done();
     })
@@ -236,7 +231,7 @@ describe('PUT /messages', function (){
 
       expect(res.status).be.equal(400);
       expect(res.body.result).to.be.equal(null);
-      expect(res.body.success).to.equal(false);
+      expect(res.body.result).to.equal(null);
       expect(res.body.message).to.equal('message content missing.');
       done();
     })
@@ -252,7 +247,7 @@ describe('PUT /messages', function (){
 
       expect(res.status).be.equal(404);
       expect(res.body.result).to.be.equal(null);
-      expect(res.body.success).to.equal(false);
+      expect(res.body.result).to.equal(null);
       expect(res.body.message).to.equal('record not found.');
       done();
     })
@@ -283,7 +278,7 @@ describe('DELETE /messages', function (){
     .delete(`${apiEndpoint}/messages/${newMessage._id}`)
     .end(function(err, res){
       expect(res.status).be.equal(200);
-      expect(res.body.success).to.equal(true);
+
       done();
     })
   });
@@ -295,7 +290,7 @@ describe('DELETE /messages', function (){
     .end(function(err, res){
       expect(res.status).be.equal(404);
       expect(res.body.result).to.be.equal(null);
-      expect(res.body.success).to.equal(false);
+      expect(res.body.result).to.equal(null);
       expect(res.body.message).to.equal('record not found.');
       done();
     })
@@ -309,7 +304,7 @@ describe('DELETE /messages', function (){
 
       expect(res.status).be.equal(400);
       expect(res.body.result).to.be.equal(null);
-      expect(res.body.success).to.equal(false);
+      expect(res.body.result).to.equal(null);
       expect(res.body.message).to.equal('invalid path params id.');
       done();
     })
@@ -340,7 +335,7 @@ describe('GET /messages/{id}', function (){
     .end(function(err, res){
       expect(res.status).be.equal(200);
       expect(res.body.result).to.be.a('object');
-      expect(res.body.success).to.equal(true);
+
       expect(res.body.result.message).to.equal(newMessage.message);
       expect(res.body.result.palindromic).to.equal(false);
       done();
@@ -354,7 +349,7 @@ describe('GET /messages/{id}', function (){
     .end(function(err, res){
       expect(res.status).be.equal(404);
       expect(res.body.result).to.be.equal(null);
-      expect(res.body.success).to.equal(false);
+      expect(res.body.result).to.equal(null);
       expect(res.body.message).to.equal('record not found.');
       done();
     })
@@ -367,7 +362,7 @@ describe('GET /messages/{id}', function (){
     .end(function(err, res){
       expect(res.status).be.equal(400);
       expect(res.body.result).to.be.equal(null);
-      expect(res.body.success).to.equal(false);
+      expect(res.body.result).to.equal(null);
       expect(res.body.message).to.equal('invalid path params id.');
       done();
     })
