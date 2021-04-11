@@ -13,6 +13,6 @@ Change environment `baseurl` to `https://example.com`, if you want to give a try
 
 * [Show messages](api-docs/getList.md) : `GET /api/v1/messages`
 * [Create messages](api-docs/post.md) : `POST /api/accounts/`
-* [Show A messages](api-docs/pk/get.md) : `GET /api/accounts/:pk/`
-* [Update A messages](api-docs/pk/put.md) : `PUT /api/accounts/:pk/`
-* [Delete A messages](api-docs/pk/delete.md) : `DELETE /api/accounts/:pk/`
+* [Show A messages](api-docs/get.md) : `GET /api/accounts/:pk/`
+* [Update A messages](api-docs/put.md) : `PUT /api/accounts/:pk/`
+* [Delete A messages](api-docs/delete.md) : `DELETE /api/accounts/:pk/`
