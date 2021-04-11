@@ -8,6 +8,10 @@ const debug = require('debug')('message-service:server');
 
 
 module.exports = {
+  /**
+   * POST /apiendpoint/messages handler
+   * @returns messages wrapped in response object
+   */
   create: async (req, res, next) => {
     let message = req.body.message;
     try {
@@ -29,10 +33,15 @@ module.exports = {
       .json(responseFormatter.error("save message failed", err));
     }
   },
+  /**
+   * PUT /apiendpoint/messages/:id handler
+   * @returns messages wrapped in response object
+   */
   updateById: async (req, res) => {
     const { id } = req.params;
     let message = req.body.message;
 
+    //validation request params
     if(typeof message === 'object' || typeof message === 'undefined'){
       return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('malformed payload.'));
     }

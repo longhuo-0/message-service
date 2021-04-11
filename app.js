@@ -6,6 +6,7 @@ const helmet = require('helmet')
 const rateLimit = require('express-rate-limit');
 const indexRouter = require('./routes/index');
 const messageRouter = require('./routes/messages');
+const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
 
@@ -13,15 +14,14 @@ if(process.env.NODE_ENV === 'development'){
   app.use(logger('dev'));
 }
 
-// view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'jade');
-
 if(process.env.NODE_ENV === 'development'){
   app.use(logger('dev'));
 }
 // helmet for security purpose
 app.use(helmet());
+
+//Sanitize inputs
+app.use(mongoSanitize());
 
 // accept application/json only
 app.use(express.json({limit: '1mb'}));
