@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "test:unit": "mocha './test/**.unit.test.js'",
-    "test:unit:report": "mocha './test/**.unit.test.js' --reporter mocha-junit-reporter --reporter-options mochaFile=./test/result.xml",
+    "test:unit:report": "mocha './test/**.unit.test.js' --reporter mocha-junit-reporter --reporter-options mochaFile=./test/result.xml || exit 0",
     "test:integrated": "mocha './test/message-service.integrated.test.js'"
   },
   "dependencies": {
