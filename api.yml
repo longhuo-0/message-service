@@ -1,0 +1,258 @@
+openapi: 3.0.1
+info:
+  title: Message API
+  description: A RESTFul API works with message resource and detect if the message
+    is a palindrome
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+  - url: https://localhost:3000/api/v1
+paths:
+  /messages:
+    get:
+      summary: Get all the messages
+      description: Get all the messages
+      parameters:
+        - name: size
+          in: query
+          description: number of messages request to be returned
+          schema:
+            type: integer
+            default: 10
+        - name: page
+          in: query
+          description: page offset start with 1
+          schema:
+            type: integer
+            default: 1
+        - name: sort
+          in: query
+          description: sortby fields allow 'createdAt', 'updateAt', 'message', 'palindromic',
+            '_id' use - for descending
+          schema:
+            type: string
+        - name: palindromic
+          in: query
+          description: use palindrmic for filtering the message result
+          schema:
+            type: integer
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MessageResult'
+                  currentPage:
+                    type: integer
+                  currentSize:
+                    type: integer
+                  totalPages:
+                    type: integer
+                  totalRecords:
+                    type: integer
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    post:
+      summary: Save the message
+      description: Save the message
+      requestBody:
+        description: message object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessagePayload'
+        required: true
+      responses:
+        200:
+          description: successful saved message
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Response'
+        400:
+          description: Malformed Payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-codegen-request-body-name: body
+  /messages/{id}:
+    put:
+      summary: Update the message
+      description: Update the message
+      parameters:
+        - name: id
+          in: path
+          description: message id to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: message object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessagePayload'
+        required: true
+      responses:
+        200:
+          description: Successful Updated Message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        400:
+          description: Malformed Path Params or Malformed Payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        404:
+          description: Message Id Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        405:
+          description: Malformed Payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-codegen-request-body-name: body
+    get:
+      summary: Get the message
+      description: Get the message
+      parameters:
+        - name: id
+          in: path
+          description: message id to be retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful Updated Message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        400:
+          description: Malformed Path Params
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        404:
+          description: Message Id Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-codegen-request-body-name: body
+    delete:
+      summary: Delete the message
+      description: Delete the message
+      parameters:
+        - name: id
+          in: path
+          description: message id to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful Delete Message
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        400:
+          description: Malformed Path Params
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        405:
+          description: Malformed Payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        404:
+          description: Message Id Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        500:
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    Response:
+      type: object
+      properties:
+        result:
+          type: object
+          properties: {}
+        message:
+          type: string
+        error:
+          type: string
+        timestamp:
+          type: string
+    MessageResult:
+      type: object
+      properties:
+        _id:
+          type: string
+        message:
+          type: string
+        palindromic:
+          type: string
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+        __v:
+          type: integer
+    MessagePayload:
+      type: object
+      properties:
+        message:
+          type: string

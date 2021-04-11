@@ -88,7 +88,7 @@ describe("Message Restful API Unit Test", function () {
       expect(status.calledOnce).to.be.true;
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
-      expect(json.args[0][0].message).to.eql('message content missing.');
+      expect(json.args[0][0].message).to.eql('malformed payload.');
       expect(json.args[0][0].result).to.be.equals(null);
     });
 
@@ -123,7 +123,7 @@ describe("Message Restful API Unit Test", function () {
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
       expect(json.args[0][0].result).to.be.equals(null);
-      expect(json.args[0][0].message).to.eql('message content missing.');
+      expect(json.args[0][0].message).to.eql('malformed payload.');
 
     });
 
@@ -350,7 +350,7 @@ describe("Message Restful API Unit Test", function () {
         expect(json.args[0][0].result.data).to.eql(response.messages);
         expect(json.args[0][0].result.currentPage).to.eql(1);
         expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(response.messages.length / 10));
-        expect(json.args[0][0].result.records).to.eql(response.messages.length);
+        expect(json.args[0][0].result.totalRecords).to.eql(response.messages.length);
 
       });
 
@@ -371,7 +371,7 @@ describe("Message Restful API Unit Test", function () {
         expect(json.args[0][0].result.data).to.eql(messages);
         expect(json.args[0][0].result.currentPage).to.eql(1);
         expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(messages.length / 10));
-        expect(json.args[0][0].result.records).to.eql(messages.length);
+        expect(json.args[0][0].result.totalRecords).to.eql(messages.length);
 
       });
 
@@ -392,7 +392,7 @@ describe("Message Restful API Unit Test", function () {
         expect(json.args[0][0].result.data).to.eql(response.messages);
         expect(json.args[0][0].result.currentPage).to.eql(1);
         expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(response.messages.length / 10));
-        expect(json.args[0][0].result.records).to.eql(totalRecord);
+        expect(json.args[0][0].result.totalRecords).to.eql(totalRecord);
 
       });
 
@@ -416,7 +416,7 @@ describe("Message Restful API Unit Test", function () {
       expect(json.args[0][0].result.data).to.eql(messages);
       expect(json.args[0][0].result.currentPage).to.eql(+page);
       expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(messages.length / 10));
-      expect(json.args[0][0].result.records).to.eql(messages.length);
+      expect(json.args[0][0].result.totalRecords).to.eql(messages.length);
       expect(json.args[0][0].result.data[0]._id).to.eql('606feb8fa7730c4975962806');
       expect(json.args[0][0].result.data[1]._id).to.eql('606feb9ea7730c4975962807');
       expect(json.args[0][0].result.data[2]._id).to.eql('606feba0a7730c4975962808');
@@ -443,7 +443,7 @@ describe("Message Restful API Unit Test", function () {
       expect(json.args[0][0].result.data).to.eql(messages);
       expect(json.args[0][0].result.currentPage).to.eql(+page);
       expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(messages.length / 10));
-      expect(json.args[0][0].result.records).to.eql(messages.length);
+      expect(json.args[0][0].result.totalRecords).to.eql(messages.length);
       expect(json.args[0][0].result.data[4]._id).to.eql('606feb9ea7730c4975962807');
     });
 
@@ -528,7 +528,7 @@ describe("Message Restful API Unit Test", function () {
       expect(json.args[0][0].result.data).to.eql(response.messages);
       expect(json.args[0][0].result.currentPage).to.eql(1);
       expect(json.args[0][0].result.totalPages).to.eql(Math.ceil(response.messages.length / 10));
-      expect(json.args[0][0].result.records).to.eql(response.messages.length);
+      expect(json.args[0][0].result.totalRecords).to.eql(response.messages.length);
     });
   });
 });

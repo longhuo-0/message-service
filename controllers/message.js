@@ -5,12 +5,13 @@ const { canConvertToPositiveInteger } = require('../utils/stringHelper');
 const {isValidObjectId} = require("../utils/validator");
 const debug = require('debug')('message-service:server');
 
+
+
 module.exports = {
   create: async (req, res, next) => {
-    let message = req.body.message || "";
-
+    let message = req.body.message;
     try {
-      if(typeof message === 'object'){
+      if(typeof message === 'object' || typeof message === 'undefined'){
         return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('malformed payload.'));
       }
       message = message.toString();
@@ -30,10 +31,10 @@ module.exports = {
   },
   updateById: async (req, res) => {
     const { id } = req.params;
-    let message = req.body.message || "";
+    let message = req.body.message;
 
-    if(typeof message === 'object'){
-      return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('malformed payload'));
+    if(typeof message === 'object' || typeof message === 'undefined'){
+      return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('malformed payload.'));
     }
     message = message.toString();
 
@@ -119,7 +120,7 @@ module.exports = {
         sort = "+" + sort;
       }
 
-      let sortable = ['createdAt', 'updateAt', 'message', 'palindromic', '_id'];
+      let sortable = ['createdAt', 'updatedAt', 'message', 'palindromic', '_id'];
 
       if(sort.trim() === ""){
         return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params sort.'));
@@ -156,7 +157,8 @@ module.exports = {
         data: messages,
         currentPage: page,
         totalPages: Math.ceil(totalRecords / size),
-        records: totalRecords
+        totalRecords: totalRecords,
+        currentSize: size
       }
       return res.status(HttpStatusCode.OK).json(responseFormatter.ok(response));
     }
