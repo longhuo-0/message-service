@@ -7,12 +7,12 @@ Application runs on http://localhost:3000/
 
 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/ff1fbb06859052651c3f)
 
-Change environment `baseurl` to `https://example.com`, if you want to give a try.
+Change postman environment `baseurl` to `https://example.com`, if you want to give a try for my demo site.
 
 ### Messages
 
-* [Show messages](api-docs/getList.md) : `GET /api/v1/messages`
-* [Create messages](api-docs/post.md) : `POST /api/accounts/`
-* [Show A messages](api-docs/get.md) : `GET /api/accounts/:pk/`
-* [Update A messages](api-docs/put.md) : `PUT /api/accounts/:pk/`
-* [Delete A messages](api-docs/delete.md) : `DELETE /api/accounts/:pk/`
+* [Show messages](docs/getList.md) : `GET /api/v1/messages`
+* [Create messages](docs/post.md) : `POST /api/accounts/`
+* [Show A messages](docs/get.md) : `GET /api/accounts/:pk/`
+* [Update A messages](docs/put.md) : `PUT /api/accounts/:pk/`
+* [Delete A messages](docs/delete.md) : `DELETE /api/accounts/:pk/`

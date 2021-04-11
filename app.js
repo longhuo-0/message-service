@@ -14,9 +14,6 @@ if(process.env.NODE_ENV === 'development'){
   app.use(logger('dev'));
 }
 
-if(process.env.NODE_ENV === 'development'){
-  app.use(logger('dev'));
-}
 // helmet for security purpose
 app.use(helmet());
 
@@ -29,11 +26,12 @@ app.use(express.json({limit: '1mb'}));
 // disable ui
 // app.use(express.static(path.join(__dirname, 'public')));
 
-// limit each ip to 10 request per window (5 mins)
+// limit each ip to 100 request per window (5 mins)
 const limiter = rateLimit({
   windowMs: 5 * 60 * 1000,
-  max: 10
+  max: 100
 })
+app.use(limiter);
 
 app.use('/', indexRouter);
 app.use('/api/v1/messages', messageRouter);
