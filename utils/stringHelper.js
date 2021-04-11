@@ -15,7 +15,7 @@ module.exports.isPalindromic = (message) => {
 
   let strLen = message.length;
   let isPalindromic = true;
-  let left = 0;
+  let left;
   let right = strLen - 1;
 
   //use Dynamic Programming to check if the left most char and the right most char are equal
