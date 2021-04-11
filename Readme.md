@@ -20,12 +20,17 @@
 [API Doc](API.md)
 
 ### Unit Test
+
     npm run test:unit
 
-[Simple Test Result](docs/getList.md)
+[Unit Test Result](docs/images/command-line-test-result.md)
 
+### Integrated Test (this will clear the message collection. make sure change `.env` MONGO_DB_URL to dev env before executing it)
 
-###Integrated Test (this will clear the message collection. make sure change `.env` MONGO_DB_URL to local env before executing it) 
     npm run test:integrated
+
+### GitHub Action Report Unit Test Report
+
+[Unit Test Result](https://github.com/GoodSpeed-HL/message-service/runs/2315423072?check_suite_focus=true)
 
 
