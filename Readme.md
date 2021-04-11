@@ -2,8 +2,10 @@
 
 ## Project Description
 - Application manages messages and provides details about those messages, specifically whether a message is a palindrome. 
-- Application created by using nodejs and storing data in mongo db. Application tested in node version 10, 12, 14, 15 by github actions.
-- API follows the RESTAPI design. [See API Doc](API.md). 
+- Project api is designed follow Rest Design Pattern. [See API Doc](API.md).
+- Application created by using nodejs and storing data in mongo db.
+- Application tested in node version 10, 12, 14, 15 by github actions.
+ 
 
 ## Before using on local env
 - NodeJS 12+

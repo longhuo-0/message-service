@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const debug = require('debug')('message-service:server');
 
-mongoose.connect('mongodb://localhost:27017/message-db', {
+mongoose.connect(process.env.MONGO_DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
