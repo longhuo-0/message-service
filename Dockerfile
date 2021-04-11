@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:14-alpine
 
 RUN mkdir -p /usr/src/app
 
@@ -11,3 +11,5 @@ RUN npm install
 EXPOSE 3600
 
 CMD ["npm", "run", "start"]
+
+

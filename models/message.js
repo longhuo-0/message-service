@@ -1,5 +1,5 @@
 'use strict';
-
+const debug = require('debug')('message-service:api');
 const mongoose = require('mongoose');
 const validator = require('validator');
 //message schema definition
@@ -14,18 +14,16 @@ const messageSchema = new mongoose.Schema({
       message: 'please provide a none blank string'
     }
   },
-  'palindromic': {type: Boolean, required: true, index: true}
+  'palindromic': { type: Boolean, required: true, index: true }
 
 }, {
   timestamps: true
 });
 
 mongoose.set('useCreateIndex', true);
-if(process.env.NODE_ENV === 'debug'){
-  mongoose.set("debug", (collectionName, method, query, doc) => {
-    console.log(`${collectionName}.${method}`, JSON.stringify(query), doc);
-  });
-}
 
+mongoose.set("debug", (collectionName, method, query, doc) => {
+  debug(`${collectionName}.${method}`, JSON.stringify(query), doc);
+});
 
 module.exports = mongoose.model('message', messageSchema);

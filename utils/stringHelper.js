@@ -1,12 +1,25 @@
-/*module.exports.isPalindromic = (message) => {
-  let reversedMessage = [...message].reverse().join('');
-  return message === reversedMessage;
-}*/
+/**
+ * characterization of a palindrome string
+ * an empty string is a palindrome
+ * a single character is a palindrome
+ * a string l m r is a palindrome, if m is a palindrome and l is a character equal to r
+ * nothing else is a palindrome.
+ *
+ * note:
+ * test will ignore special[^a-z0-9] chars and replace with ''
+ * test will ignore cases
 
+ * @param message
+ * @returns {boolean}
+ */
 module.exports.isPalindromic = (message) => {
-  //empty string is not a palindrome
-  if(message.trim() === ""){
+  if (typeof message !== 'string') {
     return false;
+  }
+
+  //a single character or empty is a palindrome
+  if (message.length <= 1) {
+    return true;
   }
 
   //remove any special chars from this message

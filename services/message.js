@@ -1,7 +1,7 @@
 // mongoose modal
 const Message = require('../models/message');
 const { isPalindromic } = require('../utils/stringHelper');
-const debug = require('debug')('message-service:server');
+const debug = require('debug')('message-service:api');
 
 module.exports = {
   /**

@@ -2,11 +2,8 @@ version: '3'
 services:
   api:
     image: longhuo/message-service:latest
-    build: .
-    networks:
-      - backend
     ports:
       - "80:3000"
-networks:
-  backend:
-    driver: bridge
+    deploy:
+      mode: replicated
+      replicas: 2

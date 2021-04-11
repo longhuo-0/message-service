@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const debug = require('debug')('message-service:server');
+const debug = require('debug')('message-service:api');
 
 mongoose.connect(process.env.MONGO_DB_URI, {
   useNewUrlParser: true,

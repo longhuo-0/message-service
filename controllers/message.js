@@ -2,8 +2,8 @@ const messageService = require('../services/message')
 const {StatusCodes: HttpStatusCode} = require('http-status-codes');
 const responseFormatter = require("../utils/response");
 const { canConvertToPositiveInteger } = require('../utils/stringHelper');
-const {isValidObjectId} = require("../utils/validator");
-const debug = require('debug')('message-service:server');
+const { isValidObjectId } = require("../utils/validator");
+const debug = require('debug')('message-service:api');
 
 
 
@@ -150,9 +150,11 @@ module.exports = {
       size = (+size > 100) ? 100 : size;
       page = +page;
 
-      if("palindromic" in req.query){
+      if("palindromic" in req.query) {
         //treat none "0" value to false
-        filter.palindromic = req.query.palindromic === "0" ? false : true;
+        if (req.query.palindromic) {
+          filter.palindromic = req.query.palindromic === "0" ? false : true;
+        }
       }
 
       let pagination = {
