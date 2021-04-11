@@ -27,9 +27,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm test:unit:report
-    
+
     - name: Publish Test Report
       uses: mikepenz/action-junit-report@v2
       with:
         report_paths: '**/test/*.xml'
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.TOKEN }}
