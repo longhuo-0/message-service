@@ -2,6 +2,7 @@
 const debug = require('debug')('message-service:api');
 const mongoose = require('mongoose');
 const validator = require('validator');
+
 //message schema definition
 const messageSchema = new mongoose.Schema({
   'message': {
@@ -17,11 +18,13 @@ const messageSchema = new mongoose.Schema({
   'palindromic': { type: Boolean, required: true, index: true }
 
 }, {
-  timestamps: true
+  timestamps: true //createdAt, updatedAt will be auto generated
 });
 
+//prevent mongoose to deprecated method ensureIndex to create index
 mongoose.set('useCreateIndex', true);
 
+//log mongoose generated mongodb query
 mongoose.set("debug", (collectionName, method, query, doc) => {
   debug(`${collectionName}.${method}`, JSON.stringify(query), doc);
 });

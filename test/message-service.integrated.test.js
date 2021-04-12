@@ -371,7 +371,10 @@ describe('GET /messages/{id}', function (){
 
 describe('Express Server middleware test', function (){
   after(function(){
-    process.exit();
+    setTimeout(function () {
+      //wait 5 seconds to generate summary of test cases then exit the application
+      process.exit();
+    }, 5000);
   });
   it('none exist route should return 404', function (done){
     chai
@@ -403,3 +406,7 @@ describe('Express Server middleware test', function (){
 
 
 });
+
+
+
+

@@ -509,7 +509,7 @@ describe("Message Restful API Unit Test", function () {
       expect(json.calledOnce).to.be.true;
       expect(status.args[0][0]).to.equal(400);
       expect(json.args[0][0].result).to.be.equals(null);
-      expect(json.args[0][0].message).to.eql('query params page must be a postive integer.');
+      expect(json.args[0][0].message).to.eql('query params page must be a positive integer.');
     });
 
     it('get message list, page = 101 - should return true', async function () {

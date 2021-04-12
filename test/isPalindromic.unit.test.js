@@ -27,9 +27,13 @@ describe('isPalindromic unit test', function (){
     assert.equal(isPalindromic('A Santa Lived As a Devil At NASA'), true);
   });
 
-  it('Are we not pure? “No, sir!” Panama’s moody Noriega brags. “It is garbage!” Irony dooms a man—a prisoner up to new era. \n should return true', function (){
-    assert.equal(isPalindromic('Are we not pure? “No, sir!” Panama’s moody Noriega brags. “It is garbage!” Irony dooms a man—a prisoner up to new era.'), true);
-  });
+  it(
+    'Are we not pure? “No, sir!” Panama’s moody Noriega brags. \n “It is garbage!” Irony dooms a man—a prisoner up to new era.  should return true',
+    function () {
+      assert.equal(isPalindromic(
+        'Are we not pure? “No, sir!” Panama’s moody Noriega brags. “It is garbage!” Irony dooms a man—a prisoner up to new era.'),
+        true);
+    });
 
   it('Canada should return false', function (){
     assert.equal(isPalindromic('Canada'), false);

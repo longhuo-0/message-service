@@ -10,7 +10,7 @@ mongoose.connect(process.env.MONGO_DB_URI, {
   console.log("db connection ok " + process.env.MONGO_DB_URI);
 });
 
-
+//handler moogse reconnectFailed error
 mongoose.connection.on('reconnectFailed', () => {
   process.nextTick(() => {
     throw new Error('mongoose could not reconnect to mongodb server');

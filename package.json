@@ -7,7 +7,7 @@
     "start:container": "node ./bin/www",
     "test:unit": "mocha './test/**.unit.test.js'",
     "test:unit:report": "mocha './test/**.unit.test.js' --reporter mocha-junit-reporter --reporter-options mochaFile=./test/result.xml",
-    "test:integrated": "mocha './test/message-service.integrated.test.js'"
+    "test:integrated": "API_ENDPOINT=/api/v1 MONGO_DB_URI=mongodb://localhost:27017/message-db mocha './test/message-service.integrated.test.js'"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

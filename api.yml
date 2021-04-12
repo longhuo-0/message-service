@@ -1,12 +1,12 @@
-openapi: 3.0.1
+openapi: 3.0.0
 info:
-  title: Message API
+  title: Message Service API
   description: A RESTFul API works with message resource and detect if the message
     is a palindrome
   version: 1.0.0
 servers:
+  - url: https://goodspeed.cloud/api/v1
   - url: http://localhost:3000/api/v1
-  - url: https://localhost:3000/api/v1
 paths:
   /messages:
     get:
@@ -31,6 +31,7 @@ paths:
             '_id' use - for descending
           schema:
             type: string
+            default: -createdAt
         - name: palindromic
           in: query
           description: use palindrmic for filtering the message result
@@ -78,7 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/SuccessResponse'
         400:
           description: Malformed Payload
           content:
@@ -116,7 +117,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/SuccessResponse'
         400:
           description: Malformed Path Params or Malformed Payload
           content:
@@ -158,7 +159,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/SuccessResponse'
         400:
           description: Malformed Path Params
           content:
@@ -194,7 +195,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/SuccessResponse'
         400:
           description: Malformed Path Params
           content:
@@ -222,7 +223,7 @@ paths:
       x-codegen-request-body-name: body
 components:
   schemas:
-    Response:
+    SuccessResponse:
       type: object
       properties:
         result:
