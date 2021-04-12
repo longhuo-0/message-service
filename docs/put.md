@@ -4,6 +4,8 @@
 
 **Method** : `PUT`
 
+**Conte-Type** : `application/json`
+
 **Payload** 
 ```json
 {
