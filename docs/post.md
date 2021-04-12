@@ -6,6 +6,8 @@ create a new message
 
 **Method** : `POST`
 
+**Conte-Type** : `application/json`
+
 **Payload** 
 ```json
 {
