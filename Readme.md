@@ -51,7 +51,7 @@ docker-compose up -d //start application at localhost:3000
 
 [integrated Test Result](docs/images/command-line-test-result-2.md)
 
-### GitHub Action Report Unit Test Report
+### GitHub Action Unit Test Report
 
 [Unit Test Result](https://github.com/GoodSpeed-HL/message-service/runs/2315423072?check_suite_focus=true)
 
