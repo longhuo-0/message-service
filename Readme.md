@@ -2,13 +2,13 @@
 
 ## Description
 
-- This application manages messages and provides details about those messages, and determine whether
-  a message is a palindrome.
-- System deployed on Amazon and using AWS Application Load Balancer to manage network traffic to
-  docker swarm nodes.
-- Chosen Node as rest api server and use mongo atlas as storage.
-- Application tested in node version 12, 14, 15 by github actions.
-- Project api is designed follow Rest Design Pattern. [See API Doc](API.md).
+- This application manages messages, provides details about those messages, and determines whether a
+  message is a palindrome.
+- The system is deployed on Amazon and using AWS Application Load Balancer to manage network traffic
+  to docker swarm nodes.
+- Chosen Node as REST API server and use Mongo Atlas as data storage.
+- Application tested in node version 12, 14, 15 by GitHub actions.
+- Project API is designed to follow Rest Design Pattern. [See API Doc](API.md).
 
 ## Architecture
 
@@ -22,7 +22,7 @@
 
 ## Start Application
 
-edit package.json `start` script `MONGO_DB_URI` to point to your local mongodb environment
+edit package.json `start` script `MONGO_DB_URI` to point to your local MongoDB environment
 
     npm install
     npm run start //start application at localhost:3000
@@ -55,7 +55,7 @@ docker-compose up -d //start application at localhost:3000
 
 [Unit Test Result](https://github.com/GoodSpeed-HL/message-service/runs/2315423072?check_suite_focus=true)
 
-### Find unexpected response? use debug env to log detailed log, e.g mongodb query and nodejs error trace
+### Find unexpected response? use debug env to log detailed log, e.g. MongoDB query and API server error trace
 
 ```bash
 # DEBUG=message-service:* ...other_env_vars npm run start
