@@ -47,7 +47,9 @@ docker-compose up -d //start application at localhost:3000
 
 ### Integrated
 
-    docker-compose -f docker-compose-intergrated-test.yml up 
+    docker-compose -f docker-compose-integrated-test.yml up 
+
+[integrated Test Result](docs/images/command-line-test-result-2.md)
 
 ### GitHub Action Report Unit Test Report
 

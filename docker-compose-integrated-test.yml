@@ -10,9 +10,14 @@ services:
       - mongo
     env_file:
       - .env.dev
+    environment:
+      - NODE_ENV=test
     command: [ "npm", "run", "test:integrated" ]
+
   mongo:
     image: mongo:latest
+    logging:
+      driver: none
     networks:
       - backend
     #volumes: one time database should not persist
