@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 const debug = require('debug')('message-service:api');
 
+console.log("start db connection " + process.env.MONGO_DB_URI);
 mongoose.connect(process.env.MONGO_DB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false
 }).then(response => {
-  debug("db connection ok");
+  console.log("db connection ok " + process.env.MONGO_DB_URI);
 });
 
 

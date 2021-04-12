@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "API_ENDPOINT=/api/v1 DEBUG=message-service:* MONGO_DB_URI=mongodb://localhost:27017/message-db node ./bin/www",
+    "start:container": "node ./bin/www",
     "test:unit": "mocha './test/**.unit.test.js'",
     "test:unit:report": "mocha './test/**.unit.test.js' --reporter mocha-junit-reporter --reporter-options mochaFile=./test/result.xml",
     "test:integrated": "mocha './test/message-service.integrated.test.js'"
@@ -11,7 +12,6 @@
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "dotenv": "^8.2.0",
     "express": "~4.16.1",
     "express-mongo-sanitize": "^2.0.2",
     "express-rate-limit": "^5.2.6",

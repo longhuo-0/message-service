@@ -61,7 +61,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
     post:
       summary: Save the message
       description: Save the message
@@ -78,21 +78,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/Response'
         400:
           description: Malformed Payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
         500:
           description: Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
       x-codegen-request-body-name: body
   /messages/{id}:
     put:
@@ -124,25 +122,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
         404:
           description: Message Id Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
         405:
           description: Malformed Payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
         500:
           description: Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
       x-codegen-request-body-name: body
     get:
       summary: Get the message
@@ -166,19 +164,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
         404:
           description: Message Id Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
         500:
           description: Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
       x-codegen-request-body-name: body
     delete:
       summary: Delete the message
@@ -202,25 +200,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
         405:
           description: Malformed Payload
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
         404:
           description: Message Id Not Found
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
         500:
           description: Server Error
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response'
+                $ref: '#/components/schemas/FailedResponse'
       x-codegen-request-body-name: body
 components:
   schemas:
@@ -229,13 +227,33 @@ components:
       properties:
         result:
           type: object
-          properties: {}
+          properties: { }
         message:
           type: string
+          default: ""
         error:
           type: string
+          default: null
         timestamp:
           type: string
+          format: date-time
+          default: '2021-04-11T01:36:19.683Z'
+    FailedResponse:
+      type: object
+      properties:
+        result:
+          type: string
+          default: null
+        message:
+          type: string
+          default: "failed reason"
+        error:
+          type: string
+          default: "error description"
+        timestamp:
+          type: string
+          format: date-time
+          default: '2021-04-11T01:36:19.683Z'
     MessageResult:
       type: object
       properties:

@@ -3,15 +3,19 @@ const assert = chai.assert;
 const {isPalindromic} = require('../utils/stringHelper');
 
 describe('isPalindromic unit test', function (){
-  it('empty string return false', function (){
-    assert.equal(isPalindromic(''), false);
+  it('empty string should return false', function () {
+    assert.equal(isPalindromic(''), true);
   });
 
-  it('Rotator - should return true', function (){
+  it('single letter should return true', function () {
+    assert.equal(isPalindromic('1'), true);
+  });
+
+  it('Rotator - should return true', function () {
     assert.equal(isPalindromic('Rotator'), true);
   });
 
-  it('Racecar - should return true', function (){
+  it('Racecar - should return true', function () {
     assert.equal(isPalindromic('Racecar'), true);
   });
 

@@ -1,4 +1,3 @@
-require('dotenv').config()
 const createError = require('http-errors');
 const express = require('express');
 const logger = require('morgan');
@@ -10,10 +9,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
 
-if(process.env.NODE_ENV === 'development'){
-  app.use(logger('dev'));
-}
-
+app.use(logger('dev'));
 // helmet for security purpose
 app.use(helmet());
 

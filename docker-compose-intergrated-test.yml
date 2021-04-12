@@ -1,8 +1,7 @@
-version: '3'
+version: '3.9'
 services:
   api:
     image: longhuo/message-service:latest
-    build: .
     networks:
       - backend
     ports:
@@ -11,13 +10,13 @@ services:
       - mongo
     env_file:
       - .env.dev
-    command: [ "npm", "run", "start:container" ]
+    command: [ "npm", "run", "test:integrated" ]
   mongo:
     image: mongo:latest
     networks:
       - backend
-    volumes:
-      - ./data:/data/db
+    #volumes: one time database should not persist
+
 networks:
   backend:
     driver: bridge

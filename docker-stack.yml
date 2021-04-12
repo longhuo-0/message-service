@@ -7,3 +7,6 @@ services:
     deploy:
       mode: replicated
       replicas: 2
+    env_file:
+      - .env
+    command: [ "npm", "run", "start:container" ]
