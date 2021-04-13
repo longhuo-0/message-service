@@ -29,12 +29,12 @@ edit package.json `start` script `MONGO_DB_URI` to point to your local MongoDB e
 
 ## Use Docker for local development
 
-** Before start containers in local env **
+**Before start containers in local env**
 
 - Docker 18+
 - port port 3000 is in use
 
-** start containers **
+**start containers**
 
 ```
 //enviroment read from .env.dev
