@@ -29,10 +29,18 @@ edit package.json `start` script `MONGO_DB_URI` to point to your local MongoDB e
 
 ## Use Docker for local development
 
-- start container
+** Before start containers in local env **
+
+- Docker 18+
+- port port 3000 is in use
+
+** start containers **
 
 ```
-docker-compose up -d //start application at localhost:3000
+//enviroment read from .env.dev
+//start application at localhost:3000
+//use override entry ponint npm run start:container
+docker-compose up -d 
 ```
 
 ## API Doc
@@ -46,8 +54,13 @@ docker-compose up -d //start application at localhost:3000
 [Unit Test Result](docs/images/command-line-test-result.md)
 
 ### Integrated
-
-    docker-compose -f docker-compose-integrated-test.yml up 
+```
+//enviroment read from .env.dev
+//start application at localhost:3000
+//use override entry ponint npm run test:integrated
+docker-compose -f docker-compose-integrated-test.yml up 
+```
+    
 
 [integrated Test Result](docs/images/command-line-test-result-2.md)
 
