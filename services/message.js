@@ -39,18 +39,16 @@ module.exports = {
         message: message,
         palindromic: isPalindromic(message)
       }, id);
-      if (result === null) {
-        throw new Error("record not found");
-      }
       return result;
     }
     catch (err) {
       throw err;
     }
   },
-  getById: async (id) => {
+  getById: (id) => {
     try {
-      return await messageRepository.getById(id);
+      const result = messageRepository.getById(id);
+      return result;
     }
     catch (err) {
       throw err;
@@ -59,10 +57,6 @@ module.exports = {
   deleteById: async (id) => {
     try {
       const result = await messageRepository.deleteById(id);
-      if (result === null) {
-        throw new Error("record not found");
-      }
-
       return result;
     }
     catch (err) {
