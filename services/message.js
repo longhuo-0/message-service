@@ -2,8 +2,9 @@
 const Message = require('../models/message');
 const { isPalindromic } = require('../utils/stringHelper');
 const debug = require('debug')('message-service:api');
-
+const messageRepository = require('../repositories/message');
 module.exports = {
+
   /**
    * @param page
    * @param size
@@ -13,12 +14,7 @@ module.exports = {
    */
   getList: async (filter = {}, { page = 0, size = 10, sort = '-createdAt'}) => {
     try {
-      const result = await Message
-      .find(filter)
-      .limit(size * 1)
-      .skip(page * size)
-      .sort(sort);
-      return result;
+      return await messageRepository.getList(filter, { page, size, sort });
     }
     catch (err) {
       throw err;
@@ -30,8 +26,7 @@ module.exports = {
         message: message,
         palindromic: isPalindromic(message)
       });
-      const result = await newMessage.save();
-      return result;
+      return await messageRepository.create(newMessage);
     }
     catch (err) {
       debug(err);
@@ -40,17 +35,10 @@ module.exports = {
   },
   updateById: async (message, id) => {
     try {
-      const result = await Message.findOneAndUpdate(
-        {
-          _id: id,
-        },
-        {
-          message: message,
-          palindromic: isPalindromic(message)
-        }, {
-          new: true,
-          runValidators: true
-        });
+      const result = await messageRepository.updateById({
+        message: message,
+        palindromic: isPalindromic(message)
+      }, id);
       if (result === null) {
         throw new Error("record not found");
       }
@@ -62,11 +50,7 @@ module.exports = {
   },
   getById: async (id) => {
     try {
-      const result = await Message.findOne(
-        {
-          _id: id
-        });
-      return result;
+      return await messageRepository.getById(id);
     }
     catch (err) {
       throw err;
@@ -74,10 +58,7 @@ module.exports = {
   },
   deleteById: async (id) => {
     try {
-      const result = await Message.findOneAndDelete(
-        {
-          _id: id
-        });
+      const result = await messageRepository.deleteById(id);
       if (result === null) {
         throw new Error("record not found");
       }
@@ -90,7 +71,7 @@ module.exports = {
   },
   count: async (filter) => {
     try {
-      const result = await Message.countDocuments(filter);
+      const result = await messageRepository.count(filter);
       return result;
     }
     catch (err) {

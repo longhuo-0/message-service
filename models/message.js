@@ -1,8 +1,7 @@
-'use strict';
 const debug = require('debug')('message-service:api');
 const mongoose = require('mongoose');
 const validator = require('validator');
-
+const MessageModel = require('../models/message')
 //message schema definition
 const messageSchema = new mongoose.Schema({
   'message': {
@@ -29,4 +28,12 @@ mongoose.set("debug", (collectionName, method, query, doc) => {
   debug(`${collectionName}.${method}`, JSON.stringify(query), doc);
 });
 
+class MessageClass {
+  constructor(message, isPalindromic) {
+    this.message = message;
+    this.isPalindromic = isPalindromic;
+  }
+}
+
+messageSchema.loadClass(MessageClass);
 module.exports = mongoose.model('message', messageSchema);

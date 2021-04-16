@@ -7,15 +7,15 @@ const MongooseError = require('mongoose').Error
 
 const MessageService = require('../services/message')
 const Message = require('../models/message');
-const MessageRepository = require('../repositories/message')
+const MessageRepository = require('../repositories/message');
 
-describe("Message Service Unit Test", function () {
+describe("Message Repo Unit Test", function () {
   describe("create", function () {
     let status, json, res;
 
     afterEach(function () {
       //special stub due to message modal instance is dynamic create in create call
-      MessageRepository.create.restore();
+      Message.prototype.save.restore();
     });
 
     it("should create new message", async function () {
@@ -28,8 +28,11 @@ describe("Message Service Unit Test", function () {
         updatedAt: faker.date.past()
       }
 
-      const stub = sinon.stub(MessageRepository, 'create').returns(stubValue);
-      const message = await MessageService.create(msg);
+      const stub = sinon.stub(Message.prototype, 'save').returns(stubValue);
+      const message = await MessageRepository.create({
+        message: msg,
+        palindromic: true
+      });
 
       expect(stub.calledOnce).to.be.true;
       expect(message._id).to.equal(stubValue._id);
@@ -40,7 +43,7 @@ describe("Message Service Unit Test", function () {
 
     it('should not save - simulate mongo general', async function () {
       const msg = "madam";
-      const stub = sinon.stub(MessageRepository, "create").throws({ name: 'MongoError' });
+      const stub = sinon.stub(Message.prototype, "save").throws({ name: 'MongoError' });
       try {
         await MessageService.create(msg);
       }
@@ -52,7 +55,7 @@ describe("Message Service Unit Test", function () {
 
     it('should not save - simulate mongo error', async function () {
       const msg = "madam";
-      const stub = sinon.stub(MessageRepository, "create")
+      const stub = sinon.stub(Message.prototype, "save")
       .throws(new MongooseError.ValidationError());
       try {
         await MessageService.create(msg);
@@ -165,19 +168,20 @@ describe("Message Service Unit Test", function () {
       }
     });
 
-    it('update a message from valid objectId, but message content is empty should throw error', async function () {
-      const id = "b95c2cb52cda";
-      const stub = sinon.stub(MessageService, "updateById")
-      .throws(new MongooseError.ValidationError());
-      try {
-        const message = await MessageService.updateById("", id);
-      }
-      catch (error) {
-        expect(stub.calledOnce).to.be.true;
-        expect(error).to.be.instanceof(MongooseError.ValidationError);
-        expect(error.message).to.be.contains("Validation failed")
-      }
-    });
+    it('update a message from valid objectId, but message content is empty should throw error',
+      async function () {
+        const id = "b95c2cb52cda";
+        const stub = sinon.stub(MessageService, "updateById")
+        .throws(new MongooseError.ValidationError());
+        try {
+          const message = await MessageService.updateById("", id);
+        }
+        catch (error) {
+          expect(stub.calledOnce).to.be.true;
+          expect(error).to.be.instanceof(MongooseError.ValidationError);
+          expect(error.message).to.be.contains("Validation failed")
+        }
+      });
 
 
   });
@@ -185,7 +189,7 @@ describe("Message Service Unit Test", function () {
   describe("delete", function () {
     const mockUpdatedMessage = "Madam Wong"
     afterEach(function () {
-      MessageRepository.deleteById.restore();
+      Message.findOneAndDelete.restore();
     });
 
     it("delete a message from a valid objectId, should pass", async function () {
@@ -197,7 +201,7 @@ describe("Message Service Unit Test", function () {
         updatedAt: faker.date.past()
       }
 
-      const stub = sinon.stub(MessageRepository, "deleteById").returns(stubValue);
+      const stub = sinon.stub(Message, "findOneAndDelete").returns(stubValue);
       const message = await MessageService.deleteById("606feb8fa7730c4975962806");
 
       expect(stub.calledOnce).to.be.true;
@@ -210,8 +214,7 @@ describe("Message Service Unit Test", function () {
 
     it('get message from invalid record objectId, should return null', async function () {
       const id = "6070fd162366b95c2cb52cda";
-      const stub = sinon.stub(MessageRepository, "deleteById")
-      .throws(new Error("record not found"));
+      const stub = sinon.stub(Message, "findOneAndDelete").throws(new Error("record not found"));
       try {
         const message = await MessageService.deleteById(id);
       }
@@ -224,7 +227,7 @@ describe("Message Service Unit Test", function () {
 
     it('get message from malformed objectId, should throw error', async function () {
       const id = "b95c2cb52cda";
-      const stub = sinon.stub(MessageRepository, "deleteById")
+      const stub = sinon.stub(Message, "findOneAndDelete")
       .throws(new MongooseError.CastError(`Cast to ObjectId failed for value ${id}`));
       try {
         const message = await MessageService.deleteById(id);
@@ -241,7 +244,7 @@ describe("Message Service Unit Test", function () {
 
 
     afterEach(function () {
-      MessageRepository.getList.restore();
+      Message.find.restore();
     });
 
     it('get message list, no filter, use default pagination - should return array of messages',
@@ -250,7 +253,22 @@ describe("Message Service Unit Test", function () {
         const pagination = { page: 0, size: 10, sort: '-createdAt' };
 
         // make chained return to simulate mongoose find mongoose api
-        const stub = sinon.stub(MessageRepository, "getList").returns(response.messages);
+        const stub = sinon.stub(Message, "find").returns({
+          limit: (n) => {
+            return {
+              skip: (m) => {
+                return {
+                  sort: (w) => {
+                    return new Promise((
+                      resolve, reject) => {
+                      resolve(response.messages);
+                    });
+                  }
+                }
+              }
+            }
+          }
+        });
         const messages = await MessageService.getList(filter, pagination);
         expect(stub.calledOnce).to.be.true;
         expect(messages).to.eql(response.messages);
@@ -265,7 +283,22 @@ describe("Message Service Unit Test", function () {
         const mockMessages = response.messages.filter(item => item.palindromic === true);
 
         // make chained return to simulate mongoose find mongoose api
-        const stub = sinon.stub(MessageRepository, "getList").returns(mockMessages);
+        const stub = sinon.stub(Message, "find").returns({
+          limit: (n) => {
+            return {
+              skip: (m) => {
+                return {
+                  sort: (w) => {
+                    return new Promise((
+                      resolve, reject) => {
+                      resolve(mockMessages);
+                    });
+                  }
+                }
+              }
+            }
+          }
+        });
         const messages = await MessageService.getList(filter, pagination);
         expect(stub.calledOnce).to.be.true;
         expect(messages).to.eql(mockMessages);
@@ -280,7 +313,22 @@ describe("Message Service Unit Test", function () {
         const mockMessages = response.messages.filter(item => item.palindromic === true);
 
         // make chained return to simulate mongoose find mongoose api
-        const stub = sinon.stub(MessageRepository, "getList").returns(mockMessages);
+        const stub = sinon.stub(Message, "find").returns({
+          limit: (n) => {
+            return {
+              skip: (m) => {
+                return {
+                  sort: (w) => {
+                    return new Promise((
+                      resolve, reject) => {
+                      resolve(mockMessages);
+                    });
+                  }
+                }
+              }
+            }
+          }
+        });
         const messages = await MessageService.getList(filter, pagination);
         expect(stub.calledOnce).to.be.true;
         expect(messages).to.eql(mockMessages);
