@@ -189,7 +189,7 @@ describe("Message Repo Unit Test", function () {
   describe("delete", function () {
     const mockUpdatedMessage = "Madam Wong"
     afterEach(function () {
-      Message.findOneAndDelete.restore();
+      MessageRepository.deleteById.restore();
     });
 
     it("delete a message from a valid objectId, should pass", async function () {
@@ -201,7 +201,7 @@ describe("Message Repo Unit Test", function () {
         updatedAt: faker.date.past()
       }
 
-      const stub = sinon.stub(Message, "findOneAndDelete").returns(stubValue);
+      const stub = sinon.stub(MessageRepository, "deleteById").returns(stubValue);
       const message = await MessageService.deleteById("606feb8fa7730c4975962806");
 
       expect(stub.calledOnce).to.be.true;
@@ -214,7 +214,8 @@ describe("Message Repo Unit Test", function () {
 
     it('get message from invalid record objectId, should return null', async function () {
       const id = "6070fd162366b95c2cb52cda";
-      const stub = sinon.stub(Message, "findOneAndDelete").throws(new Error("record not found"));
+      const stub = sinon.stub(MessageRepository, "deleteById")
+      .throws(new Error("record not found"));
       try {
         const message = await MessageService.deleteById(id);
       }
@@ -227,7 +228,7 @@ describe("Message Repo Unit Test", function () {
 
     it('get message from malformed objectId, should throw error', async function () {
       const id = "b95c2cb52cda";
-      const stub = sinon.stub(Message, "findOneAndDelete")
+      const stub = sinon.stub(MessageRepository, "deleteById")
       .throws(new MongooseError.CastError(`Cast to ObjectId failed for value ${id}`));
       try {
         const message = await MessageService.deleteById(id);
@@ -259,10 +260,14 @@ describe("Message Repo Unit Test", function () {
               skip: (m) => {
                 return {
                   sort: (w) => {
-                    return new Promise((
-                      resolve, reject) => {
-                      resolve(response.messages);
-                    });
+                    return {
+                      exec: () => {
+                        return new Promise((
+                          resolve, reject) => {
+                          resolve(response.messages);
+                        });
+                      }
+                    }
                   }
                 }
               }
@@ -289,10 +294,14 @@ describe("Message Repo Unit Test", function () {
               skip: (m) => {
                 return {
                   sort: (w) => {
-                    return new Promise((
-                      resolve, reject) => {
-                      resolve(mockMessages);
-                    });
+                    return {
+                      exec: () => {
+                        return new Promise((
+                          resolve, reject) => {
+                          resolve(mockMessages);
+                        });
+                      }
+                    }
                   }
                 }
               }
@@ -319,10 +328,14 @@ describe("Message Repo Unit Test", function () {
               skip: (m) => {
                 return {
                   sort: (w) => {
-                    return new Promise((
-                      resolve, reject) => {
-                      resolve(mockMessages);
-                    });
+                    return {
+                      exec: () => {
+                        return new Promise((
+                          resolve, reject) => {
+                          resolve(mockMessages);
+                        });
+                      }
+                    }
                   }
                 }
               }

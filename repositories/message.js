@@ -11,7 +11,7 @@ module.exports = {
    * @returns {Promise<*>}
    */
   getList: async (filter = {}, { page = 0, size = 10, sort = '-createdAt' }) => {
-    return Message.find(filter).limit(size * 1).skip(page * size).sort(sort);
+    return await Message.find(filter).limit(size * 1).skip(page * size).sort(sort).exec();
 
   },
   create: async (message) => {
@@ -26,22 +26,21 @@ module.exports = {
       doc, {
         new: true,
         runValidators: true
-      });
+      }).exec();
   },
   getById: async (id) => {
-    return await Message.findOne(
+    return Message.findOne(
       {
         _id: id
-      });
-    return result;
+      }).exec();
   },
   deleteById: async (id) => {
     return await Message.findOneAndDelete(
       {
         _id: id
-      });
+      }).exec();
   },
   count: async (filter) => {
-    return await Message.countDocuments(filter);
+    return await Message.countDocuments(filter).exec();
   }
 }
