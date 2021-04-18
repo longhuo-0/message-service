@@ -68,6 +68,11 @@ docker-compose -f docker-compose-integrated-test.yml up
 
 [Unit Test Result](https://github.com/GoodSpeed-HL/message-service/runs/2315423072?check_suite_focus=true)
 
+### Issues 
+
+👮🏾‍♂️👮‍♀️
+palindromic currently set to true
+
 ### Find unexpected response? use debug env to log detailed log, e.g. MongoDB query and API server error trace
 
 ```bash
