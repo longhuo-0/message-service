@@ -33,6 +33,7 @@ class MessageClass {
     this.message = message;
     this.isPalindromic = isPalindromic;
   }
+
 }
 
 messageSchema.loadClass(MessageClass);

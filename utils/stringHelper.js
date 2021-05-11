@@ -12,6 +12,7 @@
  * @param message
  * @returns {boolean}
  */
+// 1231231233211
 module.exports.isPalindromic = (message) => {
   if (typeof message !== 'string') {
     return false;
@@ -23,10 +24,12 @@ module.exports.isPalindromic = (message) => {
   }
 
   //remove any special chars from this message
-  const keepDigitAndWordRegex = /[^a-z0-9]+/g;
-  message = message.toLowerCase().replace(keepDigitAndWordRegex, '');
-
-  let strLen = message.length;
+  const keepDigitAndWordRegex = /[—\-!$%^&*()_+|~="\’'`{}\[:;<>?,.@#\]\s]/g;
+  message = message.replace(keepDigitAndWordRegex, '');
+  let message_chars = [...message];
+  console.log(message);
+  console.log(message_chars);
+  let strLen = message_chars.length;
   let isPalindromic = true;
   let left;
   let right = strLen - 1;
@@ -35,8 +38,8 @@ module.exports.isPalindromic = (message) => {
   //if so, continue to left + 1 char and right - 1 char
   //comparing until reach middle of the array, then return true
   //if not, return false
-  for( left = 0; left < strLen / 2; left++){
-    if(message[left] !== message[right]){
+  for (left = 0; left < strLen / 2; left++) {
+    if (message_chars[left].toLowerCase() !== message_chars[right].toLowerCase()) {
       isPalindromic = false;
       break;
     }

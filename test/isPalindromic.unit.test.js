@@ -31,11 +31,19 @@ describe('isPalindromic unit test', function (){
     'Are we not pure? “No, sir!” Panama’s moody Noriega brags. \n “It is garbage!” Irony dooms a man—a prisoner up to new era.  should return true',
     function () {
       assert.equal(isPalindromic(
-        'Are we not pure? “No, sir!” Panama’s moody Noriega brags. “It is garbage!” Irony dooms a man—a prisoner up to new era.'),
+        'Are we not pure? "No, sir!" Panama’s moody Noriega brags. "It is garbage!" Irony dooms a man—a prisoner up to new era.'),
         true);
     });
 
-  it('Canada should return false', function (){
+  it('Canada should return false', function () {
     assert.equal(isPalindromic('Canada'), false);
+  });
+
+  it('😀😀️️', function () {
+    assert.equal(isPalindromic('😀😀'), true);
+  });
+
+  it('👶️👶🏿', function () {
+    assert.equal(isPalindromic('👶️👶🏿'), false);
   });
 });
