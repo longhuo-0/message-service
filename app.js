@@ -5,6 +5,7 @@ const helmet = require('helmet')
 const rateLimit = require('express-rate-limit');
 const indexRouter = require('./routes/index');
 const messageRouter = require('./routes/messages');
+const todoRouter = require('./routes/todos');
 const mongoSanitize = require('express-mongo-sanitize');
 
 const app = express();
@@ -34,6 +35,7 @@ app.use(limiter);
 
 app.use('/', indexRouter);
 app.use('/api/v1/messages', messageRouter);
+app.use('/api/v1/todos', todoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
