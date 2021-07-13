@@ -1,7 +1,7 @@
 // mongoose modal
 
 const debug = require('debug')('message-service:api');
-const todoRepository = require('../repositories/todo');
+const userRepository = require('../repositories/user');
 module.exports = {
 
   /**
@@ -13,15 +13,15 @@ module.exports = {
    */
   getList: async (filter = {}, { page = 0, size = 10, sort = '-createdAt'}) => {
     try {
-      return await todoRepository.getList(filter, { page, size, sort });
+      return await userRepository.getList(filter, { page, size, sort });
     }
     catch (err) {
       throw err;
     }
   },
-  create: async (todo) => {
+  create: async (user) => {
     try {
-      return await todoRepository.create(todo);
+      return await userRepository.create(user);
     }
     catch (err) {
       debug(err);
@@ -30,7 +30,7 @@ module.exports = {
   },
   updateById: async (doc, id) => {
     try {
-      const result = await todoRepository.updateById(doc, id);
+      const result = await userRepository.updateById(doc, id);
       return result;
     }
     catch (err) {
@@ -39,7 +39,7 @@ module.exports = {
   },
   getById: (id) => {
     try {
-      const result = todoRepository.getById(id);
+      const result = userRepository.getById(id);
       return result;
     }
     catch (err) {
@@ -48,7 +48,7 @@ module.exports = {
   },
   deleteById: async (id) => {
     try {
-      const result = await todoRepository.deleteById(id);
+      const result = await userRepository.deleteById(id);
       return result;
     }
     catch (err) {
@@ -57,7 +57,7 @@ module.exports = {
   },
   count: async (filter) => {
     try {
-      const result = await todoRepository.count(filter);
+      const result = await userRepository.count(filter);
       return result;
     }
     catch (err) {

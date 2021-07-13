@@ -1,4 +1,4 @@
-const todoService = require('../services/todo')
+const userService = require('../services/user')
 const {StatusCodes: HttpStatusCode} = require('http-status-codes');
 const responseFormatter = require("../utils/response");
 const { canConvertToPositiveInteger } = require('../utils/stringHelper');
@@ -16,9 +16,9 @@ module.exports = {
    * return newly created message
    */
   create: async (req, res, next) => {
-    let {title, completed} = req.body;
+    let {username, firstName, lastName} = req.body;
     try {
-      const result = await todoService.create({title, completed});
+      const result = await userService.create({username, firstName, lastName});
       return res.status(HttpStatusCode.CREATED).json(responseFormatter.ok(result));
     }
     catch (err) {
@@ -33,22 +33,21 @@ module.exports = {
    */
   updateById: async (req, res) => {
     const { id } = req.params;
-    let completed = req.body.completed;
-    let title = req.body.title;
+    let {username, firstName, lastName} = req.body;
     try {
-      const searchResult = await todoService.getById(id);
+      const searchResult = await userService.getById(id);
       if(searchResult === null){
         return res
         .status(HttpStatusCode.NOT_FOUND)
         .json(responseFormatter.error(`record not found.`));
       }
-      const result = await todoService.updateById({ title, completed }, id);
+      const result = await userService.updateById({ username, firstName, lastName }, id);
       return res.status(HttpStatusCode.OK).json(responseFormatter.ok(result));
     }
     catch (err) {
       return res
       .status(HttpStatusCode.INTERNAL_SERVER_ERROR)
-      .json(responseFormatter.error(`update message ${id} failed`, err));
+      .json(responseFormatter.error(`update user ${id} failed`, err));
     }
   },
   /**
@@ -63,13 +62,13 @@ module.exports = {
     }
 
     try {
-      const searchResult = await todoService.getById(id);
+      const searchResult = await userService.getById(id);
       if (searchResult === null) {
         return res
         .status(HttpStatusCode.NOT_FOUND)
         .json(responseFormatter.error(`record not found.`));
       }
-      await todoService.deleteById(id);
+      await userService.deleteById(id);
       return res
       .status(HttpStatusCode.OK)
       .json(responseFormatter.ok(`message ${id} deleted`));
@@ -81,7 +80,7 @@ module.exports = {
     }
   },
   /**
-   * Get /messages/:id handler
+   * Get /users/:id handler
    * return searched message id
    */
   getById: async (req, res) => {
@@ -93,7 +92,7 @@ module.exports = {
     }
 
     try {
-      const message = await todoService.getById(id);
+      const message = await userService.getById(id);
       if (message === null) {
         return res
         .status(HttpStatusCode.NOT_FOUND)
@@ -124,7 +123,7 @@ module.exports = {
       }
 
       //define searchable fileds
-      let sortable = ['createdAt', 'updatedAt', 'message', 'palindromic', '_id'];
+      let sortable = ['createdAt', 'updatedAt', 'username', '_id'];
 
       if(sort.trim() === ""){
         return res.status(HttpStatusCode.BAD_REQUEST).json(responseFormatter.error('invalid query params sort.'));
@@ -146,20 +145,13 @@ module.exports = {
       size = (+size > 100) ? 100 : size;
       page = +page;
 
-      if("palindromic" in req.query) {
-        //treat none "0" value to false
-        if (req.query.palindromic) {
-          filter.palindromic = req.query.palindromic === "0" ? false : true;
-        }
-      }
-
       let pagination = {
         page: page - 1,
         size,
         sort : sort
       }
-      const messages = await todoService.getList(filter, pagination);
-      const totalRecords = await todoService.count(filter);
+      const messages = await userService.getList(filter, pagination);
+      const totalRecords = await userService.count(filter);
       const response = {
         data: messages,
         currentPage: page,

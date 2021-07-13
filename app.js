@@ -6,8 +6,9 @@ const rateLimit = require('express-rate-limit');
 const indexRouter = require('./routes/index');
 const messageRouter = require('./routes/messages');
 const todoRouter = require('./routes/todos');
+const userRouter = require('./routes/users');
 const mongoSanitize = require('express-mongo-sanitize');
-
+const cors = require('cors')
 const app = express();
 
 //disable access log when testing
@@ -16,7 +17,7 @@ if (process.env.NODE_ENV != 'test') {
 }
 // helmet for security purpose
 app.use(helmet());
-
+app.use(cors());
 //Sanitize inputs
 app.use(mongoSanitize());
 
@@ -36,6 +37,7 @@ app.use(limiter);
 app.use('/', indexRouter);
 app.use('/api/v1/messages', messageRouter);
 app.use('/api/v1/todos', todoRouter);
+app.use('/api/v1/users', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
