@@ -1,6 +1,7 @@
 {
   "name": "message-service",
   "version": "0.0.0",
+  "description": "message service",
   "private": true,
   "scripts": {
     "start": "API_ENDPOINT=/api/v1 DEBUG=message-service:* MONGO_DB_URI=mongodb://localhost:27017/message-db node ./bin/www",
